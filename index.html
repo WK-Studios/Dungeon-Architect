@@ -20,9 +20,9 @@
             --text-gothic: #d4c4b7;
         }
 
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: #0a0505; border-left: 1px solid var(--metal-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--metal-dark); border: 1px solid var(--metal-light); }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0505; border-left: 1px solid var(--metal-dark); border-right: 1px solid var(--metal-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--metal-dark); border: 1px solid var(--metal-light); border-radius: 2px;}
         ::-webkit-scrollbar-thumb:hover { background: #4a3624; }
         
         body {
@@ -126,90 +126,101 @@
 
     <!-- Main App Area -->
     <div class="flex-1 flex flex-row overflow-hidden relative">
-        <!-- Sidebar / Controls -->
+        
+        <!-- LEFT SIDEBAR: Tools & Global Settings -->
         <aside class="w-80 border-r-2 border-[#3b2b1c] flex flex-col h-full z-10 shrink-0 metal-panel bg-opacity-100 overflow-hidden">
             <div class="corner-tr"></div><div class="corner-bl"></div>
-            <div class="p-5 border-b border-[#3b2b1c] flex items-center justify-center bg-black/40 shadow-md">
+            
+            <!-- App Header -->
+            <div class="p-5 border-b border-[#3b2b1c] flex items-center justify-center bg-black/40 shadow-md shrink-0">
                 <h1 class="text-2xl font-bold text-[#8f1717] flex items-center gap-2 font-title tracking-widest text-center" style="text-shadow: 0 0 10px rgba(143,23,23,0.5), 2px 2px 4px #000;">
                     Dungeon Architect
                 </h1>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-4 space-y-6 relative">
-                
-                <!-- Layer Selector -->
-                <div>
-                    <h2 class="text-sm font-title text-[#7a6347] mb-2 border-b border-[#3b2b1c] pb-1">Map Layers</h2>
-                    <div class="flex gap-2">
-                        <button id="btn-layer-0" class="layer-btn active btn-gothic flex-1 py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Level 1</button>
-                        <button id="btn-layer-1" class="layer-btn btn-gothic flex-1 py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Level 2</button>
-                        <button id="btn-layer-2" class="layer-btn btn-gothic flex-1 py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Level 3</button>
+            <!-- Audio Player Bar -->
+            <div class="border-b border-[#3b2b1c] bg-[#0f0a05] px-4 py-2.5 flex flex-col gap-2 shadow-inner z-10 shrink-0">
+                <div class="flex items-center justify-between">
+                    <button id="btn-play-music" class="text-[#a89f91] hover:text-[#ebd8c3] focus:outline-none transition-colors w-6 h-6 flex items-center justify-center bg-[#1a120c] border border-[#3b2b1c] rounded-sm hover:border-[#7a6347] shadow-sm" data-tooltip="Play/Pause Music">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </button>
+                    
+                    <div class="flex items-center gap-2 flex-1 px-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#7a6347]"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                        <input type="range" id="music-volume" min="0" max="1" step="0.01" value="0.3" class="w-full accent-[#8f1717]">
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <label class="cursor-pointer text-[#a89f91] hover:text-[#ebd8c3] transition-colors w-6 h-6 flex items-center justify-center bg-[#1a120c] border border-[#3b2b1c] rounded-sm hover:border-[#7a6347] shadow-sm" data-tooltip="Upload Custom Track">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <input type="file" id="music-upload" accept="audio/*" class="hidden">
+                        </label>
+
+                        <label class="flex items-center gap-1 cursor-pointer ml-1" data-tooltip="Mute Music">
+                            <input type="checkbox" id="music-mute" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                            <span class="text-[9px] text-[#7a6347] font-semibold uppercase">Mute</span>
+                        </label>
                     </div>
                 </div>
+                <div class="flex justify-center items-center w-full overflow-hidden">
+                    <span id="music-track-name" class="text-[9px] text-[#7a6347] font-mono truncate w-full text-center tracking-wider">No track uploaded</span>
+                </div>
+                <audio id="bg-music" loop></audio>
+            </div>
 
-                <!-- Tools -->
-                <div>
-                    <h2 class="text-sm font-title text-[#7a6347] mb-3 border-b border-[#3b2b1c] pb-1">Tools & Actions</h2>
-                    
-                    <div class="grid grid-cols-3 gap-2 mb-2">
-                        <button id="btn-draw" class="btn-gothic active py-2 rounded-sm focus:outline-none tracking-wider">Draw</button>
-                        <button id="btn-erase-tile" class="btn-gothic py-2 rounded-sm focus:outline-none tracking-wider leading-tight">Erase<br>Tile</button>
-                        <button id="btn-erase-env" class="btn-gothic py-2 rounded-sm focus:outline-none tracking-wider leading-tight">Erase<br>Env</button>
+            <!-- Left Scrollable Area -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 relative">
+                
+                <!-- Accordion: Tools & Layers -->
+                <div class="metal-panel rounded-sm">
+                    <div class="corner-tr"></div><div class="corner-bl"></div>
+                    <div class="flex justify-between items-center cursor-pointer p-3 bg-black/50 border-b border-[#3b2b1c]" onclick="toggleAccordion('acc-tools', 'chevron-tools')">
+                        <h2 class="text-sm font-title text-[#7a6347] select-none flex items-center gap-2">
+                            Map Layers & History
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors" data-tooltip="Manage active layers and map history"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                        </h2>
+                        <span id="chevron-tools" class="text-[#7a6347] transition-transform duration-200" style="transform: rotate(0deg);">▼</span>
                     </div>
+                    
+                    <div id="acc-tools" class="p-3 space-y-4">
+                        <!-- Layer Selector -->
+                        <div>
+                            <div class="flex gap-2">
+                                <button id="btn-layer-0" class="layer-btn active btn-gothic flex-1 py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Level 1</button>
+                                <button id="btn-layer-1" class="layer-btn btn-gothic flex-1 py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Level 2</button>
+                                <button id="btn-layer-2" class="layer-btn btn-gothic flex-1 py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Level 3</button>
+                            </div>
+                        </div>
 
-                    <div class="grid grid-cols-3 gap-2 mb-4 border-b border-[#3b2b1c] pb-4">
-                        <button id="btn-undo" class="btn-gothic py-1.5 rounded-sm focus:outline-none tracking-wider">Undo</button>
-                        <button id="btn-redo" class="btn-gothic py-1.5 rounded-sm focus:outline-none tracking-wider">Redo</button>
-                        <button id="btn-clear" class="btn-gothic py-1.5 rounded-sm focus:outline-none tracking-wider text-[#ff6b6b]">Clear</button>
-                    </div>
-                    
-                    <div class="bg-[#140e0a] border border-[#3b2b1c] p-2 rounded-sm mb-2 shadow-inner">
-                        <div class="text-[10px] text-[#7a6347] font-semibold uppercase mb-2 border-b border-[#3b2b1c] pb-1 text-center">Group & Optimize For Export</div>
-                        <div class="grid grid-cols-2 gap-2 pl-2">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="opt-floor" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-floor">Floors</label>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="opt-ceil" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-ceil">Ceilings</label>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="opt-wall" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-wall">Walls</label>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="opt-stairs" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-stairs">Stairs</label>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="opt-ladder" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-ladder">Ladders</label>
+                        <!-- History Tools -->
+                        <div>
+                            <h3 class="text-xs font-title text-[#7a6347] mb-2 border-b border-[#3b2b1c] pb-1">History & Actions</h3>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button id="btn-undo" class="btn-gothic py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Undo</button>
+                                <button id="btn-redo" class="btn-gothic py-1.5 rounded-sm focus:outline-none tracking-wider text-xs">Redo</button>
+                                <button id="btn-clear" class="btn-gothic py-1.5 rounded-sm focus:outline-none tracking-wider text-xs text-[#ff6b6b]">Clear</button>
                             </div>
                         </div>
                     </div>
-                    
-                    <button id="btn-export" class="btn-gothic w-full py-2.5 rounded-sm flex justify-center items-center gap-2 focus:outline-none tracking-wider" style="color: #a3b899; border-color: #4a5c40; font-size: 0.85rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Export 3D Model (.GLB)
-                    </button>
                 </div>
 
-                <!-- Auto Generate -->
-                <div class="metal-panel p-4 rounded-sm">
+                <!-- Accordion: Random Generator -->
+                <div class="metal-panel rounded-sm">
                     <div class="corner-tr"></div><div class="corner-bl"></div>
-                    <div class="flex justify-between items-center cursor-pointer mb-2" id="toggle-generator">
-                        <h2 class="text-sm font-title text-[#7a6347] select-none">Random Generator</h2>
-                        <span id="gen-chevron" class="text-[#7a6347] transition-transform duration-200" style="transform: rotate(180deg);">▼</span>
+                    <div class="flex justify-between items-center cursor-pointer p-3 bg-black/50 border-b border-[#3b2b1c]" onclick="toggleAccordion('acc-generator', 'chevron-generator')">
+                        <h2 class="text-sm font-title text-[#7a6347] select-none flex items-center gap-2">
+                            Random Generator
+                        </h2>
+                        <span id="chevron-generator" class="text-[#7a6347] transition-transform duration-200" style="transform: rotate(180deg);">▼</span>
                     </div>
                     
-                    <div id="generator-options" class="space-y-3 pt-2 border-t border-[#3b2b1c]">
+                    <div id="acc-generator" class="p-3 space-y-3 hidden">
                         <div>
                             <div class="flex justify-between items-end mb-1">
-                                <label class="block text-xs text-[#a89f91] font-semibold uppercase">Seed</label>
+                                <label class="block text-xs text-[#a89f91] font-semibold uppercase flex items-center gap-1">Seed <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Specific text string used to generate the map. Reusing a seed creates the exact same layout."><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                                 <div class="flex items-center gap-1">
                                     <input type="checkbox" id="gen-auto-seed" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="gen-auto-seed">Auto-Random</label>
+                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer flex items-center gap-1" for="gen-auto-seed">Auto-Random <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a new random seed every time you click Generate Map"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                                 </div>
                             </div>
                             <input type="text" id="gen-seed" placeholder="Enter seed..." class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm font-mono">
@@ -217,11 +228,11 @@
                         
                         <div class="flex gap-3">
                             <div class="flex-1">
-                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Min Cells</label>
+                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Min Cells <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Minimum total number of rooms and corridors to generate"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                                 <input type="number" id="input-min" value="20" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm">
                             </div>
                             <div class="flex-1">
-                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Max Cells</label>
+                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Max Cells <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Maximum total number of rooms and corridors to generate"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                                 <input type="number" id="input-max" value="60" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm">
                             </div>
                         </div>
@@ -229,47 +240,47 @@
                         <div class="space-y-1">
                             <div class="flex items-center gap-2">
                                 <input type="checkbox" id="gen-structured" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="gen-structured">Formatted Layout (Rooms/Halls)</label>
+                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer flex items-center gap-1" for="gen-structured">Formatted Layout <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a traditional dungeon with separated rooms and connecting hallways"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
                             <div class="flex items-center gap-2">
                                 <input type="checkbox" id="gen-castle" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="gen-castle">Castle Style Layout</label>
+                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer flex items-center gap-1" for="gen-castle">Castle Style Layout <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a massive central keep surrounded by branching paths"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
                             
                             <!-- Custom Castle Options -->
                             <div id="gen-castle-options" class="hidden grid-cols-3 gap-2 pt-1 border-l-2 border-[#8f1717] pl-2 ml-1 mb-2">
-                                <div><label class="block text-[9px] text-[#7a6347] font-semibold uppercase">Hall Width</label><input type="number" id="gen-hall-width" value="1" min="1" max="5" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
-                                <div><label class="block text-[9px] text-[#7a6347] font-semibold uppercase">Min Room</label><input type="number" id="gen-room-min" value="3" min="2" max="15" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
-                                <div><label class="block text-[9px] text-[#7a6347] font-semibold uppercase">Max Room</label><input type="number" id="gen-room-max" value="7" min="3" max="20" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                                <div><label class="block text-[9px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Hall Width <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Thickness of generated corridors"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label><input type="number" id="gen-hall-width" value="1" min="1" max="5" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                                <div><label class="block text-[9px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Min Room <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Minimum constraints for generated rooms"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label><input type="number" id="gen-room-min" value="3" min="2" max="15" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                                <div><label class="block text-[9px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Max Room <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Maximum constraints for generated rooms"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label><input type="number" id="gen-room-max" value="7" min="3" max="20" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
                             </div>
 
                             <div class="flex items-center gap-2">
                                 <input type="checkbox" id="gen-overlap" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="gen-overlap">Prevent Overlap</label>
+                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer flex items-center gap-1" for="gen-overlap">Prevent Overlap <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Stops rooms from overlapping, resulting in a more sprawling map"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
                             <div class="flex items-center gap-2">
                                 <input type="checkbox" id="gen-multilevel" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="gen-multilevel">Randomize L1-L3 (Multi-Level)</label>
+                                <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer flex items-center gap-1" for="gen-multilevel">Multi-Level (L1-L3) <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates all 3 levels simultaneously and attempts to connect them with stairs/ladders"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
                         </div>
 
                         <div id="gen-prob-options" class="grid grid-cols-3 gap-2 pt-1">
-                            <div><label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Rooms %</label><input type="number" id="gen-p-room" value="60" min="0" max="100" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
-                            <div><label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Halls %</label><input type="number" id="gen-p-hall" value="40" min="0" max="100" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
-                            <div><label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Junctions</label><input type="number" id="gen-p-junc" value="30" min="0" max="100" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                            <div><label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Rooms % <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Probability weighting for generating a room"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label><input type="number" id="gen-p-room" value="60" min="0" max="100" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                            <div><label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Halls % <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Probability weighting for generating a hallway"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label><input type="number" id="gen-p-hall" value="40" min="0" max="100" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                            <div><label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Junctions <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Probability weighting for branching paths from existing structures"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label><input type="number" id="gen-p-junc" value="30" min="0" max="100" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
                         </div>
 
                         <!-- Environment Corner Spawning -->
                         <div class="pt-2 border-t border-[#3b2b1c]">
                             <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs text-[#a89f91] font-semibold uppercase">Env Spawning (Corners)</label>
+                                <label class="block text-xs text-[#a89f91] font-semibold uppercase flex items-center gap-1">Env Spawning (Corners) <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Percentage chance to spawn an Environment Preset in the inner corners of generated rooms"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                                 <span class="text-[10px] text-[#7a6347] font-mono"><span id="val-env-chance">25</span>%</span>
                             </div>
                             <input type="range" id="gen-env-chance" min="0" max="100" value="25" class="w-full accent-[#8f1717]">
                         </div>
 
                         <div id="gen-connection-options" class="hidden pt-2 border-t border-[#3b2b1c]">
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Specific Vertical Connection</label>
+                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Specific Vertical Connection <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Forces the multi-level generator to use this specific stair or ladder preset to connect floors"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             <select id="gen-connection" class="input-gothic w-full rounded-sm px-2 py-1.5 text-xs cursor-pointer text-[#d4c4b7]">
                                 <option value="auto">Auto (Any Stair/Ladder)</option>
                             </select>
@@ -279,229 +290,86 @@
                     </div>
                 </div>
 
-                <!-- 3D Settings -->
-                <div class="metal-panel p-4 rounded-sm">
+                <!-- Accordion: 3D Settings & Export -->
+                <div class="metal-panel rounded-sm">
                     <div class="corner-tr"></div><div class="corner-bl"></div>
-                    <h2 class="text-sm font-title text-[#7a6347] mb-3 border-b border-[#3b2b1c] pb-1">3D Settings</h2>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Floor/Ceil Thickness: <span id="val-thickness" class="text-white">0.05</span></label>
-                            <input type="range" id="setting-thickness" min="0.01" max="0.5" step="0.01" value="0.05" class="w-full accent-[#8f1717]">
-                        </div>
-                        
-                        <div class="pt-2 border-t border-[#3b2b1c]">
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Level Heights</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div><label class="block text-[10px] text-[#7a6347] text-center">L1</label><input type="number" id="h-l0" value="1" step="0.1" min="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
-                                <div><label class="block text-[10px] text-[#7a6347] text-center">L2</label><input type="number" id="h-l1" value="1" step="0.1" min="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
-                                <div><label class="block text-[10px] text-[#7a6347] text-center">L3</label><input type="number" id="h-l2" value="1" step="0.1" min="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                    <div class="flex justify-between items-center cursor-pointer p-3 bg-black/50 border-b border-[#3b2b1c]" onclick="toggleAccordion('acc-export', 'chevron-export')">
+                        <h2 class="text-sm font-title text-[#7a6347] select-none flex items-center gap-2">
+                            3D Environment & Export
+                        </h2>
+                        <span id="chevron-export" class="text-[#7a6347] transition-transform duration-200" style="transform: rotate(180deg);">▼</span>
+                    </div>
+                    
+                    <div id="acc-export" class="p-3 space-y-4 hidden">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Floor/Ceil Thickness: <span id="val-thickness" class="text-white">0.05</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Vertical depth of the floor and ceiling slabs"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="range" id="setting-thickness" min="0.01" max="0.5" step="0.01" value="0.05" class="w-full accent-[#8f1717]">
+                            </div>
+                            
+                            <div class="pt-2 border-t border-[#3b2b1c]">
+                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Level Heights <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Wall height multiplier for each specific level"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div><label class="block text-[10px] text-[#7a6347] text-center">L1</label><input type="number" id="h-l0" value="1" step="0.1" min="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                                    <div><label class="block text-[10px] text-[#7a6347] text-center">L2</label><input type="number" id="h-l1" value="1" step="0.1" min="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                                    <div><label class="block text-[10px] text-[#7a6347] text-center">L3</label><input type="number" id="h-l2" value="1" step="0.1" min="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-2 border-t border-[#3b2b1c]">
+                                <label class="text-xs text-[#a89f91] font-semibold uppercase flex items-center gap-1">Torch Color <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Color of the point light attached to the camera"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="color" id="light-color" value="#ffaa55" class="w-8 h-8 rounded-sm cursor-pointer border border-[#3b2b1c] p-0 bg-black">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Torch Intensity: <span id="val-intensity" class="text-white">1.5</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Brightness of the camera light"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="range" id="light-intensity" min="0" max="5" step="0.1" value="1.5" class="w-full accent-[#8f1717]">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Torch Distance: <span id="val-distance" class="text-white">8</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="How far the camera light reaches before fading out"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="range" id="light-distance" min="2" max="20" step="1" value="8" class="w-full accent-[#8f1717]">
+                            </div>
+                            <div class="flex items-center gap-2 pt-1 pb-2">
+                                <input type="checkbox" id="light-flicker" checked class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c]">
+                                <label class="text-xs text-[#a89f91] font-semibold uppercase flex items-center gap-1 cursor-pointer" for="light-flicker">Enable Flicker <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adds an animated flickering effect to the light source"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between pt-2 border-t border-[#3b2b1c]">
-                            <label class="text-xs text-[#a89f91] font-semibold uppercase">Torch Color</label>
-                            <input type="color" id="light-color" value="#ffaa55" class="w-8 h-8 rounded-sm cursor-pointer border border-[#3b2b1c] p-0 bg-black">
+                        <div class="bg-[#140e0a] border border-[#3b2b1c] p-2 rounded-sm mb-2 shadow-inner">
+                            <div class="text-[10px] text-[#7a6347] font-semibold uppercase mb-2 border-b border-[#3b2b1c] pb-1 text-center flex items-center justify-center gap-1">
+                                Group & Optimize
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Combines adjacent meshes of the same type to drastically improve 3D performance and reduce export file size."><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 pl-2">
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="opt-floor" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-floor">Floors</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="opt-ceil" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-ceil">Ceilings</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="opt-wall" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-wall">Walls</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="opt-stairs" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-stairs">Stairs</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="opt-ladder" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer" for="opt-ladder">Ladders</label>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Torch Intensity: <span id="val-intensity" class="text-white">1.5</span></label>
-                            <input type="range" id="light-intensity" min="0" max="5" step="0.1" value="1.5" class="w-full accent-[#8f1717]">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Torch Distance: <span id="val-distance" class="text-white">8</span></label>
-                            <input type="range" id="light-distance" min="2" max="20" step="1" value="8" class="w-full accent-[#8f1717]">
-                        </div>
-                        <div class="flex items-center gap-2 pt-1">
-                            <input type="checkbox" id="light-flicker" checked class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c]">
-                            <label class="text-xs text-[#a89f91] font-semibold uppercase">Enable Flicker</label>
-                        </div>
+                        
+                        <button id="btn-export" class="btn-gothic w-full py-2.5 rounded-sm flex justify-center items-center gap-2 focus:outline-none tracking-wider" style="color: #a3b899; border-color: #4a5c40; font-size: 0.85rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Export 3D Model (.GLB)
+                        </button>
                     </div>
                 </div>
 
-                <!-- Cell Presets -->
-                <div>
-                    <div class="flex items-center justify-between mb-2 border-b border-[#3b2b1c] pb-1">
-                        <h2 class="text-sm font-title text-[#7a6347]">Cell Presets</h2>
-                        <button id="btn-add-preset" class="text-[#8f1717] hover:text-[#ff6b6b] text-sm font-bold font-title tracking-wider transition-colors">+ Add Preset</button>
-                    </div>
-                    <div id="presets-list" class="space-y-2 mb-4 max-h-40 overflow-y-auto pr-1">
-                        <!-- Dynamic presets inserted here -->
-                    </div>
-
-                    <!-- Active Preset Editor -->
-                    <div id="preset-editor" class="metal-panel p-4 rounded-sm space-y-4 mb-8">
-                        <div class="corner-tr"></div><div class="corner-bl"></div>
-                        <div>
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Preset Name</label>
-                            <input type="text" id="edit-name" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm font-bold text-[#d4c4b7]">
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="flex-1">
-                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Map Color</label>
-                                <div class="flex gap-2">
-                                    <input type="color" id="edit-color" class="w-8 h-8 rounded-sm cursor-pointer border border-[#3b2b1c] p-0 bg-black shrink-0">
-                                    <input type="text" id="edit-color-hex" class="input-gothic w-full rounded-sm px-2 py-1 text-sm uppercase font-mono">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="pt-3 border-t border-[#3b2b1c]">
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Cell Type / 3D Model</label>
-                            <select id="edit-special-type" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm cursor-pointer text-[#d4c4b7]">
-                                <option value="none">Normal Room/Corridor</option>
-                                <option value="stairs">Staircase (Punch Hole)</option>
-                                <option value="ladder">Ladder Shaft (Punch Hole)</option>
-                                <option value="custom">Custom Room (.glb)</option>
-                                <option value="environment">Environment Object (.glb)</option>
-                            </select>
-                            
-                            <!-- Unhidden toggles for all structural types -->
-                            <div id="hole-options" class="mt-2 space-y-1">
-                                <div id="auto-scale-container" class="flex items-center gap-2 mt-2 hidden">
-                                    <input type="checkbox" id="edit-auto-scale" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                    <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer" for="edit-auto-scale">Auto-Scale to Level Height</label>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" id="edit-keep-floor" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                    <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer" for="edit-keep-floor">Keep Floor (Draw Slab)</label>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" id="edit-keep-ceil" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                    <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer" for="edit-keep-ceil">Keep Ceiling (Draw Slab)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="trim-selector-box" class="pt-3 border-t border-[#3b2b1c]">
-                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Wall Trim</label>
-                            <select id="edit-trim-pos" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm cursor-pointer text-[#d4c4b7]">
-                                <option value="none">None</option>
-                                <option value="bottom">Bottom Trim</option>
-                                <option value="top">Top Trim</option>
-                                <option value="both">Top & Bottom Trim</option>
-                            </select>
-                            <div id="trim-options" class="hidden space-y-2 mt-2">
-                                <label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Custom Trim Model (.glb)</label>
-                                <input type="file" id="edit-trim-glb" accept=".glb,.gltf" class="text-xs text-[#d4c4b7] w-full file:mr-2 file:py-1 file:border-0 file:text-xs file:bg-[#3b2b1c] file:text-[#a89f91]">
-                            </div>
-                        </div>
-
-                        <!-- Custom GLB Options -->
-                        <div id="custom-options" class="hidden space-y-3 pt-3 border-t border-[#3b2b1c]">
-                            <div>
-                                <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase">Upload .GLB Model</label>
-                                <input type="file" id="edit-custom-glb" accept=".glb,.gltf" class="text-xs text-[#d4c4b7] w-full file:mr-2 file:py-1 file:px-2 file:border-0 file:text-xs file:font-bold file:bg-[#3b2b1c] file:text-[#a89f91] hover:file:bg-[#7a6347]">
-                            </div>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div>
-                                    <label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Rot X</label>
-                                    <input type="number" id="edit-rot-x" value="0" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Rot Y</label>
-                                    <input type="number" id="edit-rot-y" value="0" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Rot Z</label>
-                                    <input type="number" id="edit-rot-z" value="0" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] text-[#7a6347] font-semibold uppercase">Uniform Scale</label>
-                                <input type="number" id="edit-scale" value="1" step="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
-                            </div>
-                        </div>
-
-                        <!-- Texture URLs -->
-                        <div id="texture-slots-container" class="space-y-2 pt-3 border-t border-[#3b2b1c]">
-                            <label class="block text-xs text-[#7a6347] font-title tracking-wider text-center mb-2">Textures & GLBs <br><span class="text-[10px] text-[#a89f91]">(Drag & Drop)</span></label>
-                            
-                            <!-- Floors and Ceilings -->
-                            <div class="grid grid-cols-2 gap-2">
-                                <!-- Floor -->
-                                <div class="flex flex-col gap-1">
-                                    <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                        <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Floor</span>
-                                        <div id="preview-floor" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                        <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                        <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="floor">
-                                    </div>
-                                    <div class="flex items-center gap-1 justify-center mt-1">
-                                        <input type="checkbox" id="edit-rot-floor" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                        <label class="text-[10px] text-[#a89f91] font-semibold uppercase cursor-pointer" for="edit-rot-floor">Rotate 90&deg;</label>
-                                    </div>
-                                </div>
-                                <!-- Ceiling -->
-                                <div class="flex flex-col gap-1">
-                                    <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                        <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Ceiling</span>
-                                        <div id="preview-ceil" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                        <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                        <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="ceil">
-                                    </div>
-                                    <div class="flex items-center gap-1 justify-center mt-1">
-                                        <input type="checkbox" id="edit-rot-ceil" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
-                                        <label class="text-[10px] text-[#a89f91] font-semibold uppercase cursor-pointer" for="edit-rot-ceil">Rotate 90&deg;</label>
-                                    </div>
-                                </div>
-
-                                <!-- Trim Slot -->
-                                <div id="trim-slot-container" class="hidden flex-col gap-1 col-span-2">
-                                    <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                        <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Trim Texture / GLB</span>
-                                        <div id="preview-trim" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                        <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                        <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="trim">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Object Slot (For Stairs/Ladders) -->
-                            <div id="object-slot-container" class="hidden grid-cols-1 gap-2 mt-2">
-                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Main Object (Stairs/Ladder)</span>
-                                    <div id="preview-object" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="object">
-                                </div>
-                                <div class="flex justify-center mt-1">
-                                    <button id="btn-rot-object" class="bg-[#140e0a] border border-[#3b2b1c] text-[#a89f91] hover:text-[#ebd8c3] hover:border-[#7a6347] px-3 py-1 rounded-sm text-[10px] font-semibold uppercase transition-colors">Rotate Object: 0&deg;</button>
-                                </div>
-                            </div>
-
-                            <!-- Wall Slots (For Normal Rooms & Custom GLBs) -->
-                            <div id="wall-slots-container" class="grid grid-cols-2 gap-2 mt-2">
-                                <!-- North -->
-                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">North Wall</span>
-                                    <div id="preview-north" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="north">
-                                </div>
-                                <!-- South -->
-                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">South Wall</span>
-                                    <div id="preview-south" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="south">
-                                </div>
-                                <!-- East -->
-                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">East Wall</span>
-                                    <div id="preview-east" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="east">
-                                </div>
-                                <!-- West -->
-                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
-                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">West Wall</span>
-                                    <div id="preview-west" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
-                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="west">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </aside>
 
@@ -553,20 +421,314 @@
                 </div>
             </div>
         </main>
+
+        <!-- RIGHT SIDEBAR: Tile Assets & Properties -->
+        <aside class="w-80 border-l-2 border-[#3b2b1c] flex flex-col h-full z-10 shrink-0 metal-panel bg-opacity-100 overflow-hidden">
+            <div class="corner-tr"></div><div class="corner-bl"></div>
+            
+            <!-- Asset Header -->
+            <div class="p-4 border-b border-[#3b2b1c] flex items-center justify-between bg-black/40 shadow-md shrink-0">
+                <h2 class="text-lg font-bold text-[#8f1717] font-title tracking-widest text-center" style="text-shadow: 2px 2px 4px #000;">
+                    Tile Assets
+                </h2>
+                <button id="btn-add-preset" class="text-[#a89f91] hover:text-[#ebd8c3] text-xs font-bold font-title tracking-wider transition-colors border border-[#3b2b1c] px-2 py-1 bg-[#1a120c] rounded-sm hover:border-[#7a6347]">+ Add New</button>
+            </div>
+
+            <!-- Scrollable Presets Area -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6 relative">
+                
+                <!-- Drawing Tools -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 border-b border-[#3b2b1c] pb-1">
+                        <h2 class="text-xs font-title text-[#7a6347] flex items-center gap-1">
+                            Drawing Tools
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Select a tool, then click and drag on the 2D map to paint or erase with your active brush"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mb-2">
+                        <button id="btn-draw" class="btn-gothic active py-2 rounded-sm focus:outline-none tracking-wider text-xs">Draw</button>
+                        <button id="btn-draw-line" class="btn-gothic py-2 rounded-sm focus:outline-none tracking-wider text-xs">Line</button>
+                        <button id="btn-draw-rect" class="btn-gothic py-2 rounded-sm focus:outline-none tracking-wider text-xs">Rect</button>
+                        <button id="btn-erase-tile" class="btn-gothic py-2 rounded-sm focus:outline-none tracking-wider leading-tight text-xs">Erase<br>Tile</button>
+                        <button id="btn-erase-env" class="btn-gothic py-2 rounded-sm focus:outline-none tracking-wider leading-tight text-xs">Erase<br>Env</button>
+                    </div>
+                    <!-- Option for Rect Fill -->
+                    <div id="rect-options" class="hidden flex items-center justify-end gap-1 mt-[-4px]">
+                        <input type="checkbox" id="opt-rect-fill" checked class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                        <label class="text-[10px] text-[#a89f91] uppercase cursor-pointer flex items-center gap-1" for="opt-rect-fill">Fill Rect <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Toggle to draw a hollow outline or a filled solid rectangle"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                    </div>
+                </div>
+
+                <!-- Presets List -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 border-b border-[#3b2b1c] pb-1">
+                        <h2 class="text-xs font-title text-[#7a6347]">Active Brushes</h2>
+                    </div>
+                    <div id="presets-list" class="space-y-2 mb-2 max-h-48 overflow-y-auto pr-1">
+                        <!-- Dynamic presets inserted here -->
+                    </div>
+                </div>
+
+                <!-- Active Preset Editor -->
+                <div id="preset-editor" class="metal-panel p-4 rounded-sm space-y-4">
+                    <div class="corner-tr"></div><div class="corner-bl"></div>
+                    <div class="border-b border-[#3b2b1c] pb-2 mb-2">
+                        <h3 class="text-xs font-title text-[#7a6347] flex items-center gap-1">
+                            Brush Properties
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors" data-tooltip="Modify the textures, logic, and 3D models attached to the currently selected brush"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                        </h3>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Preset Name</label>
+                        <input type="text" id="edit-name" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm font-bold text-[#d4c4b7]">
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <div class="flex-1">
+                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Map Color <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Color used for 2D map rendering and basic material tinting"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            <div class="flex gap-2">
+                                <input type="color" id="edit-color" class="w-8 h-8 rounded-sm cursor-pointer border border-[#3b2b1c] p-0 bg-black shrink-0">
+                                <input type="text" id="edit-color-hex" class="input-gothic w-full rounded-sm px-2 py-1 text-sm uppercase font-mono">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-3 border-t border-[#3b2b1c]">
+                        <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Cell Type / 3D Model <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Defines structural behavior. Stairs/Ladders punch holes through floors. Custom/Env use uploaded GLB models."><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                        <select id="edit-special-type" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm cursor-pointer text-[#d4c4b7]">
+                            <option value="none">Normal Room/Corridor</option>
+                            <option value="stairs">Staircase (Punch Hole)</option>
+                            <option value="ladder">Ladder Shaft (Punch Hole)</option>
+                            <option value="custom">Custom Room (.glb)</option>
+                            <option value="environment">Environment Object (.glb)</option>
+                        </select>
+                        
+                        <!-- Unhidden toggles for all structural types -->
+                        <div id="hole-options" class="mt-2 space-y-1">
+                            <div id="auto-scale-container" class="flex items-center gap-2 mt-2 hidden">
+                                <input type="checkbox" id="edit-auto-scale" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer flex items-center gap-1" for="edit-auto-scale">Auto-Scale to Level Height <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Automatically stretches the 3D model's Y-axis to match the current Level Height"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="edit-keep-floor" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer flex items-center gap-1" for="edit-keep-floor">Keep Floor <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a solid floor slab underneath this preset"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="edit-keep-ceil" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer flex items-center gap-1" for="edit-keep-ceil">Keep Ceiling <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a solid ceiling slab above this preset"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="trim-selector-box" class="pt-3 border-t border-[#3b2b1c]">
+                        <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Wall Trim <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adds decorative architectural trim meshes to the tops or bottoms of standard walls"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                        <select id="edit-trim-pos" class="input-gothic w-full rounded-sm px-2 py-1.5 text-sm cursor-pointer text-[#d4c4b7]">
+                            <option value="none">None</option>
+                            <option value="bottom">Bottom Trim</option>
+                            <option value="top">Top Trim</option>
+                            <option value="both">Top & Bottom Trim</option>
+                        </select>
+                        <div id="trim-options" class="hidden space-y-2 mt-2">
+                            <label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center gap-1">Custom Trim Model (.glb) <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Upload a custom GLB to replace the default rectangular trim"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            <input type="file" id="edit-trim-glb" accept=".glb,.gltf" class="text-xs text-[#d4c4b7] w-full file:mr-2 file:py-1 file:border-0 file:text-xs file:bg-[#3b2b1c] file:text-[#a89f91]">
+                        </div>
+                    </div>
+
+                    <!-- Custom GLB Options -->
+                    <div id="custom-options" class="hidden space-y-3 pt-3 border-t border-[#3b2b1c]">
+                        <div>
+                            <label class="block text-xs text-[#a89f91] mb-1 font-semibold uppercase flex items-center gap-1">Upload .GLB Model <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Replaces the entire cell block with your own custom 3D mesh"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            <input type="file" id="edit-custom-glb" accept=".glb,.gltf" class="text-xs text-[#d4c4b7] w-full file:mr-2 file:py-1 file:px-2 file:border-0 file:text-xs file:font-bold file:bg-[#3b2b1c] file:text-[#a89f91] hover:file:bg-[#7a6347]">
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Rot X <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adjusts the rotational orientation of the uploaded GLB model"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="number" id="edit-rot-x" value="0" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Rot Y <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adjusts the rotational orientation of the uploaded GLB model"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="number" id="edit-rot-y" value="0" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Rot Z <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adjusts the rotational orientation of the uploaded GLB model"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                <input type="number" id="edit-rot-z" value="0" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center gap-1">Uniform Scale <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Uniformly adjusts the overall size of the uploaded GLB model"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                            <input type="number" id="edit-scale" value="1" step="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs">
+                        </div>
+                    </div>
+
+                    <!-- Texture URLs -->
+                    <div id="texture-slots-container" class="space-y-2 pt-3 border-t border-[#3b2b1c]">
+                        <div class="flex items-center justify-center gap-1 mb-2">
+                            <label class="block text-xs text-[#7a6347] font-title tracking-wider text-center">Textures & GLBs <br><span class="text-[10px] text-[#a89f91]">(Drag & Drop)</span></label>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Click or Drag & Drop image files to apply textures, or GLB files to replace individual surfaces"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                        </div>
+                        
+                        <!-- Floors and Ceilings -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- Floor -->
+                            <div class="flex flex-col gap-1">
+                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Floor</span>
+                                    <div id="preview-floor" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="floor">
+                                </div>
+                                <div class="flex items-center gap-1 justify-center mt-1">
+                                    <input type="checkbox" id="edit-rot-floor" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] font-semibold uppercase cursor-pointer flex items-center gap-1" for="edit-rot-floor">Rotate 90&deg; <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Rotates the texture or GLB model on this surface by 90 degrees"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                </div>
+                            </div>
+                            <!-- Ceiling -->
+                            <div class="flex flex-col gap-1">
+                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Ceiling</span>
+                                    <div id="preview-ceil" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="ceil">
+                                </div>
+                                <div class="flex items-center gap-1 justify-center mt-1">
+                                    <input type="checkbox" id="edit-rot-ceil" class="accent-[#8f1717] w-3 h-3 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
+                                    <label class="text-[10px] text-[#a89f91] font-semibold uppercase cursor-pointer flex items-center gap-1" for="edit-rot-ceil">Rotate 90&deg; <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Rotates the texture or GLB model on this surface by 90 degrees"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                </div>
+                            </div>
+
+                            <!-- Trim Slot -->
+                            <div id="trim-slot-container" class="hidden flex-col gap-1 col-span-2">
+                                <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                    <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Trim Texture / GLB</span>
+                                    <div id="preview-trim" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                    <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="trim">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Object Slot (For Stairs/Ladders) -->
+                        <div id="object-slot-container" class="hidden grid-cols-1 gap-2 mt-2">
+                            <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">Main Object (Stairs/Ladder)</span>
+                                <div id="preview-object" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="object">
+                            </div>
+                            <div class="flex justify-center mt-1">
+                                <button id="btn-rot-object" class="bg-[#140e0a] border border-[#3b2b1c] text-[#a89f91] hover:text-[#ebd8c3] hover:border-[#7a6347] px-3 py-1 rounded-sm text-[10px] font-semibold uppercase transition-colors flex items-center gap-1">Rotate Object: 0&deg; <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Rotates the central object (stair/ladder) by 45 degrees"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></button>
+                            </div>
+                        </div>
+
+                        <!-- Wall Slots (For Normal Rooms & Custom GLBs) -->
+                        <div id="wall-slots-container" class="grid grid-cols-2 gap-2 mt-2">
+                            <!-- North -->
+                            <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">North Wall</span>
+                                <div id="preview-north" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="north">
+                            </div>
+                            <!-- South -->
+                            <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">South Wall</span>
+                                <div id="preview-south" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="south">
+                            </div>
+                            <!-- East -->
+                            <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">East Wall</span>
+                                <div id="preview-east" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="east">
+                            </div>
+                            <!-- West -->
+                            <div class="texture-slot relative h-16 rounded-sm flex flex-col items-center justify-center group overflow-hidden shadow-inner">
+                                <span class="absolute top-0 left-0 bg-black/90 border-b border-r border-[#3b2b1c] text-[10px] px-1.5 py-0.5 text-[#7a6347] font-bold z-10">West Wall</span>
+                                <div id="preview-west" class="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                                <svg class="w-5 h-5 text-[#3b2b1c] group-hover:text-[#8f1717] z-10 pointer-events-none transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <input type="file" accept="image/*,.glb,.gltf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full tex-file-input" data-slot="west">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
     </div>
 
     <!-- Persistent Footer for Ad -->
-    <footer id="ad-footer" class="h-[90px] w-full border-t border-[#3b2b1c] bg-black flex items-center justify-center shrink-0 z-50">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5904959870141100"
-             crossorigin="anonymous"></script>
-        <!-- dungeon ad -->
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:728px;height:90px"
-             data-ad-client="ca-pub-5904959870141100"
-             data-ad-slot="4574212977"></ins>
+    <footer id="ad-footer" class="h-[90px] w-full border-t border-[#3b2b1c] bg-black flex items-center justify-center shrink-0 z-50 overflow-hidden" style="min-width: 320px;">
+        <div id="ad-wrapper" class="w-full max-w-[728px] h-full flex justify-center items-center" style="min-width: 320px; height: 90px;">
+            <!-- dungeon ad -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block; width:100%; min-width: 320px; max-width: 728px; height: 90px;"
+                 data-ad-client="ca-pub-5904959870141100"
+                 data-ad-slot="4574212977"></ins>
+            <script>
+                 window.addEventListener('load', function() {
+                     setTimeout(function() {
+                         var adWrapper = document.getElementById('ad-wrapper');
+                         if (adWrapper && adWrapper.offsetWidth > 0) {
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                         }
+                     }, 500);
+                 });
+            </script>
+        </div>
     </footer>
 
     <script>
+        // UI Interaction
+        function toggleAccordion(contentId, chevronId) {
+            const content = document.getElementById(contentId);
+            const chevron = document.getElementById(chevronId);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Global Tooltip Logic
+        const tooltipEl = document.createElement('div');
+        tooltipEl.className = 'fixed pointer-events-none opacity-0 transition-opacity duration-150 z-[10000] bg-[#050202] border border-[#7a6347] text-[#ebd8c3] px-3 py-2 rounded shadow-2xl font-sans text-[11px] max-w-[220px] text-center leading-snug tracking-wide';
+        document.body.appendChild(tooltipEl);
+
+        let currentTooltipTarget = null;
+        
+        document.addEventListener('mousemove', (e) => {
+            const target = e.target.closest('[data-tooltip]');
+            
+            if (target) {
+                if (target !== currentTooltipTarget) {
+                    tooltipEl.textContent = target.getAttribute('data-tooltip');
+                    tooltipEl.style.opacity = '1';
+                    currentTooltipTarget = target;
+                }
+                
+                let x = e.clientX + 15;
+                let y = e.clientY + 15;
+                
+                // Adjust if it goes off screen
+                const rect = tooltipEl.getBoundingClientRect();
+                if (x + rect.width > window.innerWidth) x = e.clientX - rect.width - 10;
+                if (y + rect.height > window.innerHeight) y = e.clientY - rect.height - 10;
+                
+                tooltipEl.style.left = `${x}px`;
+                tooltipEl.style.top = `${y}px`;
+            } else {
+                if (currentTooltipTarget) {
+                    tooltipEl.style.opacity = '0';
+                    currentTooltipTarget = null;
+                }
+            }
+        });
+
+        // Application State
         const GRID_SIZE = 40;
         const CELL_SIZE = 24; 
         
@@ -586,12 +748,15 @@
             level: 0,
             levelHeights: [1, 1, 1],
             tool: 'draw', 
-            view: '2d',
             activePresetId: 1,
             presets: [],
             isDrawing: false,
             lastDrawCoords: {x: -1, y: -1},
-            thickness: 0.05
+            dragStartCoords: null,
+            dragCurrentCoords: null,
+            rectFilled: true,
+            thickness: 0.05,
+            view: '2d'
         };
 
         const materialCache = {}; 
@@ -688,19 +853,6 @@
             const randomColor = gothicColors[Math.floor(Math.random() * gothicColors.length)];
             const newId = addPreset(null, randomColor, 'none');
             setActivePreset(newId);
-        });
-
-        // -- GENERATOR UI TOGGLE --
-        document.getElementById('toggle-generator').addEventListener('click', () => {
-            const opts = document.getElementById('generator-options');
-            const chev = document.getElementById('gen-chevron');
-            if (opts.classList.contains('hidden')) {
-                opts.classList.remove('hidden');
-                chev.style.transform = 'rotate(0deg)';
-            } else {
-                opts.classList.add('hidden');
-                chev.style.transform = 'rotate(180deg)';
-            }
         });
 
         document.getElementById('gen-structured').addEventListener('change', (e) => {
@@ -920,22 +1072,40 @@
 
         // Tools Handling
         const btnDraw = document.getElementById('btn-draw');
+        const btnDrawLine = document.getElementById('btn-draw-line');
+        const btnDrawRect = document.getElementById('btn-draw-rect');
         const btnEraseTile = document.getElementById('btn-erase-tile');
         const btnEraseEnv = document.getElementById('btn-erase-env');
+        const optRectFill = document.getElementById('opt-rect-fill');
+        const rectOptions = document.getElementById('rect-options');
         
         function updateToolUI() {
             btnDraw.classList.remove('active');
+            btnDrawLine.classList.remove('active');
+            btnDrawRect.classList.remove('active');
             btnEraseTile.classList.remove('active');
             btnEraseEnv.classList.remove('active');
+            rectOptions.classList.add('hidden');
             
             if (state.tool === 'draw') btnDraw.classList.add('active');
+            if (state.tool === 'line') btnDrawLine.classList.add('active');
+            if (state.tool === 'rect') {
+                btnDrawRect.classList.add('active');
+                rectOptions.classList.remove('hidden');
+            }
             if (state.tool === 'erase_tile') btnEraseTile.classList.add('active');
             if (state.tool === 'erase_env') btnEraseEnv.classList.add('active');
         }
 
         btnDraw.addEventListener('click', () => { state.tool = 'draw'; updateToolUI(); });
+        btnDrawLine.addEventListener('click', () => { state.tool = 'line'; updateToolUI(); });
+        btnDrawRect.addEventListener('click', () => { state.tool = 'rect'; updateToolUI(); });
         btnEraseTile.addEventListener('click', () => { state.tool = 'erase_tile'; updateToolUI(); });
         btnEraseEnv.addEventListener('click', () => { state.tool = 'erase_env'; updateToolUI(); });
+        
+        optRectFill.addEventListener('change', (e) => {
+            state.rectFilled = e.target.checked;
+        });
 
         document.getElementById('btn-clear').addEventListener('click', () => {
             if(confirm("Are you sure you want to clear the entire map on all layers?")) {
@@ -1343,16 +1513,16 @@
                 };
                 
                 let iconBadge = '';
-                if (p.specialType === 'ladder') iconBadge = `<div class="text-[10px] bg-[#8f1717] px-1 rounded-sm text-white font-mono" title="Ladder Shaft">&#8801;</div>`;
-                if (p.specialType === 'stairs') iconBadge = `<div class="text-[10px] bg-[#8f1717] px-1 rounded-sm text-white font-mono" title="Staircase">&#9650;</div>`;
-                if (p.specialType === 'custom') iconBadge = `<div class="text-[10px] bg-[#a89f91] px-1 rounded-sm text-[#140e0a] font-mono" title="Custom Tile">&#9632;</div>`;
-                if (p.specialType === 'environment') iconBadge = `<div class="text-[10px] bg-[#4a5c40] px-1 rounded-sm text-[#fff] font-mono" title="Environment Object">&#9679;</div>`;
+                if (p.specialType === 'ladder') iconBadge = `<div class="text-[10px] bg-[#8f1717] px-1 rounded-sm text-white font-mono" data-tooltip="Ladder Shaft">&#8801;</div>`;
+                if (p.specialType === 'stairs') iconBadge = `<div class="text-[10px] bg-[#8f1717] px-1 rounded-sm text-white font-mono" data-tooltip="Staircase">&#9650;</div>`;
+                if (p.specialType === 'custom') iconBadge = `<div class="text-[10px] bg-[#a89f91] px-1 rounded-sm text-[#140e0a] font-mono" data-tooltip="Custom Tile">&#9632;</div>`;
+                if (p.specialType === 'environment') iconBadge = `<div class="text-[10px] bg-[#4a5c40] px-1 rounded-sm text-[#fff] font-mono" data-tooltip="Environment Object">&#9679;</div>`;
 
                 div.innerHTML = `
                     <div class="w-5 h-5 rounded-sm shadow-inner shrink-0 border border-black" style="background-color: ${p.color}"></div>
                     <div class="text-sm font-bold font-title text-[#d4c4b7] truncate flex-1 tracking-wide ${isAct ? 'text-[#ff6b6b]' : ''}">${p.name}</div>
                     ${iconBadge}
-                    <button class="btn-duplicate text-[#7a6347] hover:text-[#ebd8c3] ml-1 p-1 rounded-sm transition-colors" title="Duplicate Preset">
+                    <button class="btn-duplicate text-[#7a6347] hover:text-[#ebd8c3] ml-1 p-1 rounded-sm transition-colors" data-tooltip="Duplicate Preset">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     </button>
                 `;
@@ -1366,7 +1536,9 @@
             state.activePresetId = id;
             renderPresetList();
             populatePresetEditor();
-            state.tool = 'draw';
+            if (state.tool === 'erase_tile' || state.tool === 'erase_env') {
+                state.tool = 'draw';
+            }
             updateToolUI();
         }
 
@@ -1429,7 +1601,7 @@
             if(rotCeilEl) rotCeilEl.checked = !!p.rotateCeil;
 
             const rotObjBtn = document.getElementById('btn-rot-object');
-            if(rotObjBtn) rotObjBtn.innerHTML = `Rotate Object: ${p.objectRotation || 0}&deg;`;
+            if(rotObjBtn) rotObjBtn.innerHTML = `Rotate Object: ${p.objectRotation || 0}&deg; <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Rotates the central object (stair/ladder) by 45 degrees"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>`;
 
             document.getElementById('edit-rot-x').value = p.rotX || 0;
             document.getElementById('edit-rot-y').value = p.rotY || 0;
@@ -1549,7 +1721,7 @@
             const p = state.presets.find(p => p.id === state.activePresetId);
             if(!p) return;
             p.objectRotation = ((p.objectRotation || 0) + 45) % 360;
-            e.target.innerHTML = `Rotate Object: ${p.objectRotation}&deg;`;
+            e.target.innerHTML = `Rotate Object: ${p.objectRotation}&deg; <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Rotates the central object (stair/ladder) by 45 degrees"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>`;
             if(state.view === '3d') build3DScene();
         });
 
@@ -1654,6 +1826,41 @@
         canvas.width = GRID_SIZE * CELL_SIZE;
         canvas.height = GRID_SIZE * CELL_SIZE;
 
+        function getLinePoints(x0, y0, x1, y1) {
+            const points = [];
+            let dx = Math.abs(x1 - x0);
+            let dy = Math.abs(y1 - y0);
+            let sx = (x0 < x1) ? 1 : -1;
+            let sy = (y0 < y1) ? 1 : -1;
+            let err = dx - dy;
+
+            while(true) {
+                points.push({x: x0, z: y0});
+                if ((x0 === x1) && (y0 === y1)) break;
+                let e2 = 2 * err;
+                if (e2 > -dy) { err -= dy; x0 += sx; }
+                if (e2 < dx) { err += dx; y0 += sy; }
+            }
+            return points;
+        }
+
+        function getRectPoints(x0, y0, x1, y1, filled) {
+            const points = [];
+            const minX = Math.min(x0, x1);
+            const maxX = Math.max(x0, x1);
+            const minY = Math.min(y0, y1);
+            const maxY = Math.max(y0, y1);
+
+            for (let x = minX; x <= maxX; x++) {
+                for (let y = minY; y <= maxY; y++) {
+                    if (filled || x === minX || x === maxX || y === minY || y === maxY) {
+                        points.push({x: x, z: y});
+                    }
+                }
+            }
+            return points;
+        }
+
         function draw2DMap() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -1722,6 +1929,36 @@
                 }
             }
 
+            // Draw shape preview
+            if (state.isDrawing && state.dragStartCoords && state.dragCurrentCoords && (state.tool === 'line' || state.tool === 'rect')) {
+                let points = [];
+                if (state.tool === 'line') {
+                    points = getLinePoints(state.dragStartCoords.x, state.dragStartCoords.z, state.dragCurrentCoords.x, state.dragCurrentCoords.z);
+                } else if (state.tool === 'rect') {
+                    points = getRectPoints(state.dragStartCoords.x, state.dragStartCoords.z, state.dragCurrentCoords.x, state.dragCurrentCoords.z, state.rectFilled);
+                }
+
+                const p = state.presets.find(pr => pr.id === state.activePresetId);
+                if (p) {
+                    ctx.globalAlpha = 0.6;
+                    ctx.fillStyle = p.color;
+                    ctx.strokeStyle = '#fff';
+                    
+                    points.forEach(pt => {
+                        ctx.fillRect(pt.x * CELL_SIZE + 1, pt.z * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+                        ctx.strokeRect(pt.x * CELL_SIZE + 1, pt.z * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+                        
+                        if (p.specialType === 'environment') {
+                             ctx.beginPath();
+                             ctx.arc(pt.x * CELL_SIZE + CELL_SIZE/2, pt.z * CELL_SIZE + CELL_SIZE/2, CELL_SIZE/3, 0, Math.PI*2);
+                             ctx.fill();
+                             ctx.stroke();
+                        }
+                    });
+                    ctx.globalAlpha = 1.0;
+                }
+            }
+
             ctx.fillStyle = 'rgba(212, 196, 183, 0.9)'; 
             ctx.font = 'bold 16px "Cinzel", serif';
             ctx.fillText(`Editing Level ${state.level + 1}`, 15, 30);
@@ -1771,20 +2008,73 @@
         }
 
         canvas.addEventListener('mousedown', (e) => {
-            state.isDrawing = true;
-            handleCanvasAction(e);
+            const pos = getGridPos(e);
+            if (pos.x >= 0 && pos.x < GRID_SIZE && pos.z >= 0 && pos.z < GRID_SIZE) {
+                state.isDrawing = true;
+                if (state.tool === 'line' || state.tool === 'rect') {
+                    state.dragStartCoords = pos;
+                    state.dragCurrentCoords = pos;
+                    draw2DMap();
+                } else {
+                    handleCanvasAction(e);
+                }
+            }
         });
         
         window.addEventListener('mousemove', (e) => {
             if (state.isDrawing && state.view === '2d' && e.target === canvas) {
-                handleCanvasAction(e);
+                const pos = getGridPos(e);
+                if (pos.x >= 0 && pos.x < GRID_SIZE && pos.z >= 0 && pos.z < GRID_SIZE) {
+                    if (state.tool === 'line' || state.tool === 'rect') {
+                        if (!state.dragCurrentCoords || pos.x !== state.dragCurrentCoords.x || pos.z !== state.dragCurrentCoords.z) {
+                            state.dragCurrentCoords = pos;
+                            draw2DMap();
+                        }
+                    } else {
+                        handleCanvasAction(e);
+                    }
+                }
             }
         });
         
         window.addEventListener('mouseup', () => {
             if (state.isDrawing) {
+                if (state.tool === 'line' || state.tool === 'rect') {
+                    if (state.dragStartCoords && state.dragCurrentCoords) {
+                        let points = [];
+                        if (state.tool === 'line') {
+                            points = getLinePoints(state.dragStartCoords.x, state.dragStartCoords.z, state.dragCurrentCoords.x, state.dragCurrentCoords.z);
+                        } else if (state.tool === 'rect') {
+                            points = getRectPoints(state.dragStartCoords.x, state.dragStartCoords.z, state.dragCurrentCoords.x, state.dragCurrentCoords.z, state.rectFilled);
+                        }
+
+                        const p = state.presets.find(pr => pr.id === state.activePresetId);
+                        if (p) {
+                            let changed = false;
+                            points.forEach(pt => {
+                                if (pt.x >= 0 && pt.x < GRID_SIZE && pt.z >= 0 && pt.z < GRID_SIZE) {
+                                    if (p.specialType === 'environment') {
+                                        state.envGrid[state.level][pt.x][pt.z] = state.activePresetId;
+                                    } else {
+                                        state.grid[state.level][pt.x][pt.z] = state.activePresetId;
+                                    }
+                                    changed = true;
+                                }
+                            });
+                            if (changed) {
+                                hasUnsavedChanges = true;
+                            }
+                        }
+                    }
+                }
+
                 state.isDrawing = false;
                 state.lastDrawCoords = {x: -1, y: -1};
+                state.dragStartCoords = null;
+                state.dragCurrentCoords = null;
+                
+                draw2DMap();
+                
                 if (hasUnsavedChanges) {
                     saveHistory();
                     hasUnsavedChanges = false;
@@ -1811,8 +2101,6 @@
         const dungeonGroup = new THREE.Group();
         scene.add(dungeonGroup);
 
-        const planeGeo = new THREE.PlaneGeometry(1, 1);
-        
         function getMaterial(color, url) {
             const mat = new THREE.MeshStandardMaterial({ 
                 color: color,
@@ -1853,7 +2141,24 @@
             }
 
             const t = state.thickness || 0.05;
-            const slabGeo = new THREE.BoxGeometry(1, t, 1);
+            
+            // Generate basic primitives translated so their origin is exactly at their bottom center.
+            const floorGeo = new THREE.BoxGeometry(1, t, 1);
+            floorGeo.translate(0, t/2, 0);
+
+            const ceilGeo = new THREE.BoxGeometry(1, t, 1);
+            ceilGeo.translate(0, t/2, 0);
+
+            const wallGeo = new THREE.PlaneGeometry(1, 1);
+            wallGeo.translate(0, 0.5, 0);
+
+            // A flat plane facing -Y (downwards) with origin at bottom-center (0,0,0)
+            const flatPlaneGeo = new THREE.PlaneGeometry(1, 1);
+            flatPlaneGeo.rotateX(Math.PI / 2);
+
+            // A flat plane facing +Y (upwards) with origin at bottom-center (0,0,0)
+            const flatPlaneCeilGeo = new THREE.PlaneGeometry(1, 1);
+            flatPlaneCeilGeo.rotateX(-Math.PI / 2);
 
             let foundStart = false;
 
@@ -1881,22 +2186,24 @@
 
                         let drawFloor = true;
                         if (!preset.keepFloor) drawFloor = false;
+                        if (cellBelow && cellBelow.keepCeil === false) drawFloor = false;
 
                         let drawCeil = true;
                         if (!preset.keepCeil) drawCeil = false;
+                        if (cellAbove && cellAbove.keepFloor === false) drawCeil = false;
 
                         // Draw Floor with thickness
                         if (drawFloor) {
                             if (preset.models && preset.models.floor) {
                                 let floorM = preset.models.floor.clone();
                                 if (preset.rotateFloor) floorM.rotation.y = Math.PI / 2;
-                                floorM.position.set(x, getLayerBottom(y) + t/2, z);
+                                floorM.position.set(x, getLayerBottom(y), z);
                                 floorM.userData = { layer: y, category: 'Floor', isCustomRoot: true };
                                 dungeonGroup.add(floorM);
                             } else {
-                                let floor = new THREE.Mesh(slabGeo, mats.floor);
+                                let floor = new THREE.Mesh(floorGeo, mats.floor);
                                 if (preset.rotateFloor) floor.rotation.y = Math.PI / 2;
-                                floor.position.set(x, getLayerBottom(y) + t/2, z);
+                                floor.position.set(x, getLayerBottom(y), z);
                                 floor.userData = { layer: y, category: 'Floor' };
                                 floor.name = `Floor_${y}_${x}_${z}`;
                                 dungeonGroup.add(floor);
@@ -1905,9 +2212,8 @@
                                 if (cellBelowId && materialCache[cellBelowId]) {
                                     bottomMat = materialCache[cellBelowId].ceil;
                                 }
-                                let floorBot = new THREE.Mesh(planeGeo, bottomMat);
-                                floorBot.rotation.x = Math.PI / 2; 
-                                if (preset.rotateFloor) floorBot.rotation.z = Math.PI / 2; 
+                                let floorBot = new THREE.Mesh(flatPlaneGeo, bottomMat);
+                                if (preset.rotateFloor) floorBot.rotation.y = Math.PI / 2; 
                                 floorBot.position.set(x, getLayerBottom(y) - 0.002, z);
                                 floorBot.userData = { layer: y, category: 'Ceiling' };
                                 floorBot.name = `FloorUnderside_${y}_${x}_${z}`;
@@ -1920,21 +2226,20 @@
                             if (preset.models && preset.models.ceil) {
                                 let ceilM = preset.models.ceil.clone();
                                 if (preset.rotateCeil) ceilM.rotation.y = Math.PI / 2;
-                                ceilM.position.set(x, getLayerTop(y) - t/2, z);
+                                ceilM.position.set(x, getLayerTop(y) - t, z);
                                 ceilM.userData = { layer: y, category: 'Ceiling', isCustomRoot: true };
                                 dungeonGroup.add(ceilM);
                             } else {
-                                let ceil = new THREE.Mesh(slabGeo, mats.ceil);
+                                let ceil = new THREE.Mesh(ceilGeo, mats.ceil);
                                 if (preset.rotateCeil) ceil.rotation.y = Math.PI / 2;
-                                ceil.position.set(x, getLayerTop(y) - t/2, z);
+                                ceil.position.set(x, getLayerTop(y) - t, z);
                                 ceil.userData = { layer: y, category: 'Ceiling' };
                                 ceil.name = `Ceiling_${y}_${x}_${z}`;
                                 dungeonGroup.add(ceil);
 
                                 let topMat = mats.floor;
-                                let ceilTop = new THREE.Mesh(planeGeo, topMat);
-                                ceilTop.rotation.x = -Math.PI / 2; 
-                                if (preset.rotateCeil) ceilTop.rotation.z = Math.PI / 2;
+                                let ceilTop = new THREE.Mesh(flatPlaneCeilGeo, topMat);
+                                if (preset.rotateCeil) ceilTop.rotation.y = Math.PI / 2;
                                 ceilTop.position.set(x, getLayerTop(y) + 0.002, z);
                                 ceilTop.userData = { layer: y, category: 'Floor' };
                                 ceilTop.name = `CeilingTopside_${y}_${x}_${z}`;
@@ -1947,7 +2252,7 @@
 
                         if (preset.specialType === 'stairs') {
                             let objGroup = new THREE.Group();
-                            objGroup.position.set(x, getLayerCenter(y), z);
+                            objGroup.position.set(x, getLayerBottom(y), z);
                             objGroup.rotation.y = THREE.MathUtils.degToRad(preset.objectRotation || 0);
 
                             if (preset.models && preset.models.object) {
@@ -1959,11 +2264,13 @@
                                 let numSteps = Math.max(1, Math.round(10 * hFactor));
                                 const stepH = hFactor / numSteps;
                                 const stepD = 1.0 / numSteps;
-                                const stepGeo = new THREE.BoxGeometry(1, Math.min(stepH, 0.1), stepD); 
+                                const actualStepH = Math.min(stepH, 0.1);
+                                const stepGeo = new THREE.BoxGeometry(1, actualStepH, stepD); 
+                                stepGeo.translate(0, actualStepH / 2, 0); // Origin at bottom of step
                                 
                                 for(let i = 0; i < numSteps; i++) {
                                     let step = new THREE.Mesh(stepGeo, mats.object); 
-                                    let localY = -hFactor/2 + (stepH/2) + (i * stepH);
+                                    let localY = i * stepH; 
                                     let localZ = 0.5 - (stepD/2) - (i * stepD);
                                     step.position.set(0, localY, localZ); 
                                     step.userData = { layer: y, category: 'Stairs' };
@@ -1976,7 +2283,7 @@
                             dungeonGroup.add(objGroup);
                         } else if (preset.specialType === 'ladder') {
                             let objGroup = new THREE.Group();
-                            objGroup.position.set(x, getLayerCenter(y), z);
+                            objGroup.position.set(x, getLayerBottom(y), z);
                             objGroup.rotation.y = THREE.MathUtils.degToRad(preset.objectRotation || 0);
 
                             if (preset.models && preset.models.object) {
@@ -1986,7 +2293,9 @@
                                 objGroup.add(cModel);
                             } else {
                                 const poleGeo = new THREE.BoxGeometry(0.05, hFactor, 0.05);
+                                poleGeo.translate(0, hFactor / 2, 0);
                                 const rungGeo = new THREE.BoxGeometry(0.5, 0.05, 0.05);
+                                rungGeo.translate(0, 0.025, 0);
                                 
                                 let poleL = new THREE.Mesh(poleGeo, mats.object);
                                 poleL.position.set(-0.25, 0, -0.45); 
@@ -2006,7 +2315,7 @@
 
                                 for(let i=0; i<numRungs; i++) {
                                     let rung = new THREE.Mesh(rungGeo, mats.object);
-                                    let localY = -hFactor/2 + (rungSpacing/2) + (i * rungSpacing);
+                                    let localY = i * rungSpacing;
                                     rung.position.set(0, localY, -0.45);
                                     rung.userData = { layer: y, category: 'Ladder' };
                                     rung.name = `LadderRung_${i}_${y}_${x}_${z}`;
@@ -2018,7 +2327,7 @@
                             dungeonGroup.add(objGroup);
                         } else if (preset.specialType === 'custom' && modelCache[preset.id]) {
                             let objGroup = modelCache[preset.id].clone();
-                            objGroup.position.set(x, getLayerBottom(y) + t, z); 
+                            objGroup.position.set(x, getLayerBottom(y), z); 
                             objGroup.rotation.set(
                                 THREE.MathUtils.degToRad(preset.rotX || 0),
                                 THREE.MathUtils.degToRad(preset.rotY || 0),
@@ -2033,8 +2342,8 @@
                         const placeTrim = (wallDir) => {
                              if (!preset.trimPos || preset.trimPos === 'none') return;
                              
-                             const trimYBot = getLayerBottom(y) + t + 0.05;
-                             const trimYTop = getLayerTop(y) - t - 0.05;
+                             const trimYBot = getLayerBottom(y) + t;
+                             const trimYTop = getLayerTop(y) - t - 0.1;
                              
                              let rotY = 0; let ox = 0; let oz = 0;
                              if (wallDir === 'north') { oz = -0.475; rotY = 0; }
@@ -2054,7 +2363,19 @@
                                  } else if (preset.models && preset.models.trim) {
                                      tMesh = preset.models.trim.clone();
                                  } else {
-                                     tMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 0.1, 0.05), mats.trim);
+                                     // Fix gap by extending length from 1.0 to 1.1
+                                     const tg = new THREE.BoxGeometry(1.1, 0.1, 0.05);
+                                     tg.translate(0, 0.05, 0); // Origin at bottom center
+                                     
+                                     // Fix stretched UV mapping by tiling horizontally
+                                     const uvs = tg.attributes.uv;
+                                     if (uvs) {
+                                         for (let i = 0; i < uvs.count; i++) {
+                                             uvs.setX(i, uvs.getX(i) * 11);
+                                         }
+                                     }
+                                     
+                                     tMesh = new THREE.Mesh(tg, mats.trim);
                                  }
                                  tMesh.position.set(x + ox, posY, z + oz);
                                  tMesh.rotation.y = rotY;
@@ -2073,15 +2394,15 @@
                                 let wModel = preset.models[wallDir].clone();
                                 wModel.scale.y = state.levelHeights[y];
                                 wModel.rotation.y = rotY;
-                                wModel.position.set(x + ox, getLayerCenter(y), z + oz);
+                                wModel.position.set(x + ox, getLayerBottom(y), z + oz);
                                 wModel.userData = { layer: y, category: 'Wall', isCustomRoot: true };
                                 dungeonGroup.add(wModel);
                                 placeTrim(wallDir);
                             } else {
-                                let w = new THREE.Mesh(planeGeo, mats[wallDir]);
+                                let w = new THREE.Mesh(wallGeo, mats[wallDir]);
                                 w.scale.y = state.levelHeights[y];
                                 w.rotation.y = rotY;
-                                w.position.set(x + ox, getLayerCenter(y), z + oz);
+                                w.position.set(x + ox, getLayerBottom(y), z + oz);
                                 w.userData = { layer: y, category: 'Wall' };
                                 w.name = `Wall_${wallDir}_${y}_${x}_${z}`;
                                 dungeonGroup.add(w);
@@ -2247,7 +2568,7 @@
                 
                 let belowId = layer > 0 ? state.grid[layer-1][x][z] : null;
                 let belowP = belowId ? state.presets.find(pr => pr.id === belowId) : null;
-                if (belowP && (belowP.specialType === 'stairs' || belowP.specialType === 'ladder') && !belowP.keepCeil) floorExists = false; 
+                if (belowP && belowP.keepCeil === false) floorExists = false; 
                 
                 return floorExists;
             }
@@ -2386,7 +2707,18 @@
                             let mergedGeom = THREE.BufferGeometryUtils.mergeBufferGeometries(data.geometries, false);
                             if (mergedGeom) {
                                 mergedGeom = THREE.BufferGeometryUtils.mergeVertices(mergedGeom);
+
+                                // Explicitly shift the merged optimization mesh so its origin lies exactly at bottom center!
+                                mergedGeom.computeBoundingBox();
+                                const box = mergedGeom.boundingBox;
+                                const center = new THREE.Vector3();
+                                box.getCenter(center);
+                                const bottom = box.min.y;
+                                
+                                mergedGeom.translate(-center.x, -bottom, -center.z);
+
                                 const mergedMesh = new THREE.Mesh(mergedGeom, data.material);
+                                mergedMesh.position.set(center.x, bottom, center.z);
                                 mergedMesh.name = data.name;
                                 mergedMeshes.push(mergedMesh);
                             }
@@ -2438,6 +2770,66 @@
 
         document.getElementById('btn-export').addEventListener('click', () => {
             showInterstitialAd(performExport);
+        });
+
+        // --- AUDIO CONTROLS ---
+        const bgMusic = document.getElementById('bg-music');
+        const btnPlayMusic = document.getElementById('btn-play-music');
+        const musicVolume = document.getElementById('music-volume');
+        const musicMute = document.getElementById('music-mute');
+        const musicUpload = document.getElementById('music-upload');
+        const trackName = document.getElementById('music-track-name');
+
+        let isMusicPlaying = false;
+        bgMusic.volume = musicVolume.value;
+
+        const playIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+        const pauseIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+
+        btnPlayMusic.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                btnPlayMusic.innerHTML = playIcon;
+            } else {
+                if (!bgMusic.getAttribute('src')) {
+                    alert("Please upload a custom music track first using the folder icon.");
+                    return;
+                }
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    btnPlayMusic.innerHTML = pauseIcon;
+                }).catch(e => {
+                    console.error("Audio playback failed.", e);
+                    alert("Unable to play music file. Please upload a valid audio track.");
+                });
+            }
+        });
+
+        musicVolume.addEventListener('input', (e) => {
+            bgMusic.volume = e.target.value;
+            if (bgMusic.volume > 0 && musicMute.checked) {
+                musicMute.checked = false;
+                bgMusic.muted = false;
+            }
+        });
+
+        musicMute.addEventListener('change', (e) => {
+            bgMusic.muted = e.target.checked;
+        });
+
+        musicUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                bgMusic.src = url;
+                trackName.textContent = file.name;
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    btnPlayMusic.innerHTML = pauseIcon;
+                }).catch(err => console.error(err));
+            }
+            e.target.value = ''; // Reset input to allow identical subsequent uploads
         });
 
         function init() {

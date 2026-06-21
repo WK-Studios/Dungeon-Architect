@@ -1,8 +1,8 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeon Architect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -32,7 +32,6 @@
             background-image: 
                 radial-gradient(circle at 50% 50%, #1a0808 0%, #050202 100%),
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
-            overscroll-behavior: none;
         }
 
         h1, h2, h3, .font-title {
@@ -128,21 +127,6 @@
         details > summary::-webkit-details-marker {
             display: none;
         }
-
-        /* Mobile specific layout overrides */
-        body.mobile-3d-active aside { display: none !important; }
-        body.mobile-3d-active footer { display: none !important; }
-        body.mobile-3d-active .tabs-header { display: none !important; }
-        body.mobile-3d-active #view-3d { position: fixed; inset: 0; z-index: 50; }
-        
-        /* Touch controls */
-        .joystick-zone { position: absolute; bottom: 30px; left: 30px; width: 140px; height: 140px; background: rgba(10, 5, 5, 0.6); border-radius: 50%; border: 3px solid var(--metal-dark); box-shadow: inset 0 0 20px #000, 0 8px 16px rgba(0,0,0,0.9); touch-action: none; pointer-events: auto; }
-        .joystick-stick { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; background: radial-gradient(circle at center, #8f1717, #4a0909); border-radius: 50%; transform: translate(-50%, -50%); border: 2px solid var(--metal-light); box-shadow: 0 5px 10px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.2); pointer-events: none; }
-        .vert-controls { position: absolute; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; touch-action: none; pointer-events: auto; }
-        .mobile-btn { width: 65px; height: 65px; background: rgba(10, 5, 5, 0.6); border: 2px solid var(--metal-dark); border-radius: 50%; color: var(--text-gothic); font-weight: bold; font-size: 26px; display: flex; align-items: center; justify-content: center; user-select: none; touch-action: none; box-shadow: inset 0 0 10px #000, 0 5px 10px rgba(0,0,0,0.8); }
-        .mobile-btn:active { background: rgba(143, 23, 23, 0.6); border-color: var(--metal-light); color: #fff; box-shadow: inset 0 0 20px rgba(0,0,0,1); }
-        .mobile-back-btn { position: absolute; top: 20px; left: 20px; z-index: 10000; padding: 10px 20px; background: rgba(10, 5, 5, 0.85); color: var(--metal-light); border: 2px solid var(--metal-dark); font-family: 'Cinzel', serif; font-weight: bold; font-size: 14px; text-transform: uppercase; border-radius: 4px; touch-action: none; box-shadow: 0 4px 8px rgba(0,0,0,0.8); pointer-events: auto; }
-        .mobile-back-btn:active { background: #4a0909; color: white; border-color: #ff6b6b; }
     </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex flex-col selection:bg-[#4a0909] selection:text-white">
@@ -151,7 +135,7 @@
     <div class="flex-1 flex flex-row overflow-hidden relative">
         
         <!-- LEFT SIDEBAR: Tools & Global Settings -->
-        <aside class="w-80 border-r-2 border-[#3b2b1c] flex flex-col h-full z-10 shrink-0 metal-panel bg-opacity-100 overflow-hidden hidden md:flex">
+        <aside class="w-80 border-r-2 border-[#3b2b1c] flex flex-col h-full z-10 shrink-0 metal-panel bg-opacity-100 overflow-hidden">
             <div class="corner-tr"></div><div class="corner-bl"></div>
             
             <!-- App Header -->
@@ -404,7 +388,7 @@
         <!-- Main Viewport Area -->
         <main class="flex-1 flex flex-col relative min-w-0 bg-black/60">
             <!-- Tabs -->
-            <div class="tabs-header border-b-2 border-[#3b2b1c] flex bg-[#0a0505] shadow-lg relative z-10">
+            <div class="border-b-2 border-[#3b2b1c] flex bg-[#0a0505] shadow-lg relative z-10">
                 <button id="tab-2d" class="tab-btn active px-8 py-3 font-bold text-sm focus:outline-none uppercase">2D Map Editor</button>
                 <button id="tab-3d" class="tab-btn px-8 py-3 font-bold text-sm focus:outline-none uppercase flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
@@ -424,8 +408,8 @@
             <div id="view-3d" class="flex-1 relative hidden bg-black">
                 <div id="three-container" class="w-full h-full"></div>
                 
-                <!-- PC Controls Overlay -->
-                <div id="pc-controls-hint" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 metal-panel px-6 py-3 rounded-sm text-[#d4c4b7] font-title text-sm flex items-center gap-6 pointer-events-none shadow-2xl tracking-widest z-10 whitespace-nowrap hidden md:flex">
+                <!-- Controls Overlay -->
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 metal-panel px-6 py-3 rounded-sm text-[#d4c4b7] font-title text-sm flex items-center gap-6 pointer-events-none shadow-2xl tracking-widest z-10 whitespace-nowrap">
                     <div class="corner-tr"></div><div class="corner-bl"></div>
                     <div class="flex items-center gap-2">
                         <kbd class="bg-black border border-[#7a6347] px-2 py-1 rounded-sm text-xs font-mono shadow-inner text-[#7a6347]">W A S D</kbd> 
@@ -443,20 +427,6 @@
                     </div>
                 </div>
 
-                <!-- Mobile Controls Overlay -->
-                <button id="mobile-back" class="mobile-back-btn hidden">
-                    &larr; Back to Editor
-                </button>
-                <div id="mobile-controls" class="absolute inset-0 pointer-events-none hidden">
-                    <div id="joystick-base" class="joystick-zone">
-                        <div id="joystick-stick" class="joystick-stick"></div>
-                    </div>
-                    <div class="vert-controls">
-                        <div id="btn-mobile-up" class="mobile-btn">▲</div>
-                        <div id="btn-mobile-down" class="mobile-btn">▼</div>
-                    </div>
-                </div>
-
                 <!-- Crosshair -->
                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none flex justify-center items-center opacity-60">
                     <div class="w-1 h-1 bg-[#8f1717] rounded-full shadow-[0_0_5px_#ff0000]"></div>
@@ -465,7 +435,7 @@
         </main>
 
         <!-- RIGHT SIDEBAR: Tile Assets & Properties -->
-        <aside class="w-80 border-l-2 border-[#3b2b1c] flex flex-col h-full z-10 shrink-0 metal-panel bg-opacity-100 overflow-hidden hidden md:flex">
+        <aside class="w-80 border-l-2 border-[#3b2b1c] flex flex-col h-full z-10 shrink-0 metal-panel bg-opacity-100 overflow-hidden">
             <div class="corner-tr"></div><div class="corner-bl"></div>
             
             <!-- Asset Header -->
@@ -876,10 +846,6 @@
             }
         });
 
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window);
-        let joyX = 0, joyY = 0;
-        let mobileUp = false, mobileDown = false;
-
         // Application State
         const GRID_SIZE = 40;
         const CELL_SIZE = 24; 
@@ -1251,27 +1217,15 @@
             btnElement.classList.add('active');
             
             if (target === '2d') {
-                document.body.classList.remove('mobile-3d-active');
                 document.getElementById('view-2d').classList.remove('hidden');
                 document.getElementById('view-3d').classList.add('hidden');
-                document.getElementById('mobile-controls').classList.add('hidden');
-                document.getElementById('mobile-back').classList.add('hidden');
             } else {
-                if (isMobile) {
-                    document.body.classList.add('mobile-3d-active');
-                    document.getElementById('mobile-controls').classList.remove('hidden');
-                    document.getElementById('mobile-back').classList.remove('hidden');
-                }
                 document.getElementById('view-2d').classList.add('hidden');
                 document.getElementById('view-3d').classList.remove('hidden');
                 build3DScene();
                 resize3D();
             }
         }
-
-        document.getElementById('mobile-back').addEventListener('click', () => {
-            switchTab('2d', document.getElementById('tab-2d'));
-        });
 
         [0, 1, 2].forEach(levelIndex => {
             const btn = document.getElementById(`btn-layer-${levelIndex}`);
@@ -2393,11 +2347,6 @@
         const dungeonGroup = new THREE.Group();
         scene.add(dungeonGroup);
 
-        const euler = new THREE.Euler(0, 0, 0, 'YXZ');
-        const PI_2 = Math.PI / 2;
-        let isDraggingCam = false;
-        let prevMouse = { x: 0, y: 0 };
-
         function getMaterial(color, url, normalUrl) {
             const mat = new THREE.MeshStandardMaterial({ 
                 color: color,
@@ -2519,7 +2468,7 @@
                             if (preset.models && preset.models.ceil) {
                                 let ceilM = preset.models.ceil.clone();
                                 if (preset.rotateCeil) ceilM.rotation.y = Math.PI / 2;
-                                ceilM.position.set(x, getLayerTop(y) - t, z);
+                                ceilM.position.set(x, getLayerTop(y), z);
                                 ceilM.userData = { layer: y, category: 'Ceiling', isCustomRoot: true };
                                 dungeonGroup.add(ceilM);
                             } else {
@@ -2529,7 +2478,7 @@
                                 let slabMats = [mats.ceil, mats.ceil, topMat, botMat, mats.ceil, mats.ceil];
                                 let ceil = new THREE.Mesh(slabGeo, slabMats);
                                 if (preset.rotateCeil) ceil.rotation.y = Math.PI / 2;
-                                ceil.position.set(x, getLayerTop(y) - t, z); 
+                                ceil.position.set(x, getLayerTop(y), z); 
                                 ceil.userData = { layer: y, category: 'Ceiling' };
                                 ceil.name = `Ceiling_${y}_${x}_${z}`;
                                 dungeonGroup.add(ceil);
@@ -2637,7 +2586,7 @@
                              const td = 0.05 * sz;
                              const halfD = td / 2;
 
-                             const trimYBot = getLayerBottom(y);
+                             const trimYBot = getLayerBottom(y) + t;
                              const trimYTop = getLayerTop(y) - th;
                              
                              let rotY = 0; let ox = 0; let oz = 0;
@@ -2645,7 +2594,7 @@
                              if (wallDir === 'north') { oz = -0.5 + halfD; rotY = 0; eps = 0.001; }
                              if (wallDir === 'south') { oz = 0.5 - halfD; rotY = Math.PI; eps = 0.002; }
                              if (wallDir === 'east') { ox = 0.5 - halfD; rotY = -Math.PI/2; eps = 0.003; }
-                             if (wallDir === 'west') { ox = -0.475; rotY = Math.PI/2; eps = 0.004; }
+                             if (wallDir === 'west') { ox = -0.5 + halfD; rotY = Math.PI/2; eps = 0.004; }
 
                              const buildT = (posY, isTopTrim) => {
                                  let tMesh;
@@ -2744,112 +2693,6 @@
             }
         }
 
-        let activeLookTouchId = null;
-        let lastTouchX = 0, lastTouchY = 0;
-
-        container3D.addEventListener('touchstart', (e) => {
-            if (state.view !== '3d') return;
-            // Only capture touches on the container itself (not joystick or buttons)
-            for(let i=0; i<e.changedTouches.length; i++) {
-                let touch = e.changedTouches[i];
-                if (touch.target === container3D.querySelector('canvas')) {
-                    activeLookTouchId = touch.identifier;
-                    lastTouchX = touch.clientX;
-                    lastTouchY = touch.clientY;
-                    break;
-                }
-            }
-        }, {passive: false});
-
-        container3D.addEventListener('touchmove', (e) => {
-            if (state.view !== '3d' || activeLookTouchId === null) return;
-            for(let i=0; i<e.changedTouches.length; i++) {
-                let touch = e.changedTouches[i];
-                if (touch.identifier === activeLookTouchId) {
-                    const deltaX = touch.clientX - lastTouchX;
-                    const deltaY = touch.clientY - lastTouchY;
-                    
-                    euler.setFromQuaternion(camera.quaternion);
-                    euler.y -= deltaX * 0.005;
-                    euler.x -= deltaY * 0.005;
-                    euler.x = Math.max(-PI_2 + 0.01, Math.min(PI_2 - 0.01, euler.x));
-                    
-                    camera.quaternion.setFromEuler(euler);
-                    lastTouchX = touch.clientX;
-                    lastTouchY = touch.clientY;
-                    break;
-                }
-            }
-        }, {passive: false});
-
-        const endLook = (e) => {
-             for(let i=0; i<e.changedTouches.length; i++) {
-                 if (e.changedTouches[i].identifier === activeLookTouchId) {
-                     activeLookTouchId = null;
-                 }
-             }
-        };
-        container3D.addEventListener('touchend', endLook);
-        container3D.addEventListener('touchcancel', endLook);
-
-        // Joystick Logic
-        const joyBase = document.getElementById('joystick-base');
-        const joyStick = document.getElementById('joystick-stick');
-        let joyActive = false;
-        let joyCenter = {x: 0, y: 0};
-        let joyMaxRadius = 40; // px
-        
-        joyBase.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            joyActive = true;
-            const rect = joyBase.getBoundingClientRect();
-            joyCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-            updateJoystick(e.touches[0]);
-        }, {passive: false});
-
-        joyBase.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (joyActive) updateJoystick(e.touches[0]);
-        }, {passive: false});
-
-        function endJoy(e) {
-            e.preventDefault();
-            joyActive = false;
-            joyX = 0; joyY = 0;
-            joyStick.style.transform = `translate(-50%, -50%)`;
-        }
-        joyBase.addEventListener('touchend', endJoy);
-        joyBase.addEventListener('touchcancel', endJoy);
-
-        function updateJoystick(touch) {
-            let dx = touch.clientX - joyCenter.x;
-            let dy = touch.clientY - joyCenter.y;
-            let distance = Math.sqrt(dx*dx + dy*dy);
-            
-            if (distance > joyMaxRadius) {
-                dx = (dx / distance) * joyMaxRadius;
-                dy = (dy / distance) * joyMaxRadius;
-            }
-            
-            joyStick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-            
-            // Normalize -1 to 1
-            joyX = dx / joyMaxRadius;
-            joyY = dy / joyMaxRadius;
-        }
-
-        // Mobile Vert Controls
-        const btnUp = document.getElementById('btn-mobile-up');
-        const btnDown = document.getElementById('btn-mobile-down');
-        
-        btnUp.addEventListener('touchstart', (e)=>{ e.preventDefault(); mobileUp = true; }, {passive: false});
-        btnUp.addEventListener('touchend', (e)=>{ e.preventDefault(); mobileUp = false; });
-        btnUp.addEventListener('touchcancel', (e)=>{ e.preventDefault(); mobileUp = false; });
-        
-        btnDown.addEventListener('touchstart', (e)=>{ e.preventDefault(); mobileDown = true; }, {passive: false});
-        btnDown.addEventListener('touchend', (e)=>{ e.preventDefault(); mobileDown = false; });
-        btnDown.addEventListener('touchcancel', (e)=>{ e.preventDefault(); mobileDown = false; });
-
         const keys = { w: false, a: false, s: false, d: false, ' ': false, 'shift': false };
         window.addEventListener('keydown', e => { 
             const key = e.key.toLowerCase();
@@ -2860,8 +2703,13 @@
             if(keys.hasOwnProperty(key)) keys[key] = false; 
         });
 
+        let isDraggingCam = false;
+        let prevMouse = { x: 0, y: 0 };
+        const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+        const PI_2 = Math.PI / 2;
+
         container3D.addEventListener('mousedown', (e) => {
-            if(state.view !== '3d' || isMobile) return;
+            if(state.view !== '3d') return;
             isDraggingCam = true;
             prevMouse = { x: e.clientX, y: e.clientY };
         });
@@ -2869,7 +2717,7 @@
         window.addEventListener('mouseup', () => isDraggingCam = false);
         
         window.addEventListener('mousemove', (e) => {
-            if (isDraggingCam && state.view === '3d' && !isMobile) {
+            if (isDraggingCam && state.view === '3d') {
                 const deltaX = e.clientX - prevMouse.x;
                 const deltaY = e.clientY - prevMouse.y;
                 
@@ -2897,12 +2745,11 @@
             
             const right = new THREE.Vector3().crossVectors(camera.up, direction).normalize();
 
-            let fwd = 0; let str = 0;
-            if (keys.w) fwd = 1; else if (keys.s) fwd = -1; else if (Math.abs(joyY) > 0.1) fwd = -joyY;
-            if (keys.d) str = -1; else if (keys.a) str = 1; else if (Math.abs(joyX) > 0.1) str = -joyX;
-            
-            let moveX = direction.x * fwd + right.x * str;
-            let moveZ = direction.z * fwd + right.z * str;
+            let moveX = 0; let moveZ = 0;
+            if(keys.w) { moveX += direction.x; moveZ += direction.z; }
+            if(keys.s) { moveX -= direction.x; moveZ -= direction.z; }
+            if(keys.a) { moveX += right.x; moveZ += right.z; }
+            if(keys.d) { moveX -= right.x; moveZ -= right.z; }
 
             const len = Math.sqrt(moveX*moveX + moveZ*moveZ);
             if(len > 0) {
@@ -2959,8 +2806,8 @@
 
             if (isPlayerInShaft) {
                 velocityY = 0; 
-                if (keys[' '] || mobileUp) camera.position.y += speed;
-                if (keys['shift'] || mobileDown) camera.position.y -= speed;
+                if (keys[' ']) camera.position.y += speed;
+                if (keys['shift']) camera.position.y -= speed;
             } else {
                 if (camera.position.y > groundY) {
                     velocityY -= GRAVITY * delta;
@@ -3023,9 +2870,10 @@
                 return;
             }
 
-            if (dungeonGroup.children.length === 0) {
-                build3DScene();
-            }
+            // Always rebuild the 3D scene right before exporting.
+            // This forces the 3D memory to perfectly sync with the 2D grid,
+            // dropping erased tiles and cleaning overlaps automatically.
+            build3DScene();
 
             if (dungeonGroup.children.length === 0) {
                 alert("The map is empty! Draw some cells before exporting.");

@@ -369,6 +369,11 @@
                                 </div>
                             </div>
                         </div>
+
+                        <button id="btn-clean-mesh" class="btn-gothic w-full py-2.5 rounded-sm tracking-wider text-sm text-[#ebd8c3] mb-2 border-[#7a6347] flex justify-center items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                            Clean Mesh (Remove Overlaps)
+                        </button>
                         
                         <button id="btn-export" class="btn-gothic w-full py-2.5 rounded-sm flex justify-center items-center gap-2 focus:outline-none tracking-wider" style="color: #a3b899; border-color: #4a5c40; font-size: 0.85rem;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -517,11 +522,11 @@
                                 <input type="checkbox" id="edit-auto-scale" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
                                 <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer flex items-center gap-1" for="edit-auto-scale">Auto-Scale to Level Height <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Automatically stretches the 3D model's Y-axis to match the current Level Height"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div id="keep-floor-container" class="flex items-center gap-2 hidden">
                                 <input type="checkbox" id="edit-keep-floor" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
                                 <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer flex items-center gap-1" for="edit-keep-floor">Keep Floor <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a solid floor slab underneath this preset"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div id="keep-ceil-container" class="flex items-center gap-2">
                                 <input type="checkbox" id="edit-keep-ceil" class="accent-[#8f1717] w-4 h-4 rounded-sm bg-black border-[#3b2b1c] cursor-pointer">
                                 <label class="text-xs text-[#a89f91] font-semibold uppercase leading-tight cursor-pointer flex items-center gap-1" for="edit-keep-ceil">Keep Ceiling <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Generates a solid ceiling slab above this preset"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             </div>
@@ -537,6 +542,16 @@
                             <option value="both">Top & Bottom Trim</option>
                         </select>
                         <div id="trim-options" class="hidden space-y-2 mt-2">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[9px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Height Scale <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adjusts the vertical height of the trim while anchoring it to the floor/ceiling"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                    <input type="number" id="edit-trim-scale-y" value="1" step="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] text-[#7a6347] font-semibold uppercase flex items-center justify-between">Depth Scale <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Adjusts how far the trim pushes outwards into the room"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
+                                    <input type="number" id="edit-trim-scale-z" value="1" step="0.1" class="input-gothic w-full rounded-sm px-1 py-1 text-xs text-center">
+                                </div>
+                            </div>
                             <label class="block text-[10px] text-[#7a6347] font-semibold uppercase flex items-center gap-1">Custom Trim Model (.glb) <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block cursor-help text-[#7a6347] hover:text-[#ebd8c3] transition-colors align-middle" data-tooltip="Upload a custom GLB to replace the default rectangular trim"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></label>
                             <input type="file" id="edit-trim-glb" accept=".glb,.gltf" class="text-xs text-[#d4c4b7] w-full file:mr-2 file:py-1 file:border-0 file:text-xs file:bg-[#3b2b1c] file:text-[#a89f91]">
                         </div>
@@ -883,6 +898,49 @@
             return getLayerBottom(layer) + (state.levelHeights[layer] / 2);
         }
 
+        // Logic functions moved to global scope for use in both generator and physics
+        function hasTile(ly, lx, lz) {
+            if (ly < 0 || ly > 2 || lx < 0 || lx >= GRID_SIZE || lz < 0 || lz >= GRID_SIZE) return false;
+            return !!state.grid[ly][lx][lz];
+        }
+
+        function isShaft(ly, lx, lz) {
+            if (!hasTile(ly, lx, lz)) return false;
+            const p = state.presets.find(pr => pr.id === state.grid[ly][lx][lz]);
+            return p && (p.specialType === 'stairs' || p.specialType === 'ladder');
+        }
+
+        function drawsFloor(ly, lx, lz) {
+            if (!hasTile(ly, lx, lz)) return false;
+            const p = state.presets.find(pr => pr.id === state.grid[ly][lx][lz]);
+            if (!p || !p.keepFloor) return false;
+            
+            // If the tile BELOW is a shaft that punches up, hide this floor to create the hole
+            if (isShaft(ly - 1, lx, lz)) {
+                const pBelow = state.presets.find(pr => pr.id === state.grid[ly-1][lx][lz]);
+                if (pBelow && !pBelow.keepCeil) return false; 
+            }
+            
+            return true;
+        }
+
+        function drawsCeil(ly, lx, lz) {
+            if (!hasTile(ly, lx, lz)) return false;
+            const p = state.presets.find(pr => pr.id === state.grid[ly][lx][lz]);
+            if (!p || !p.keepCeil) return false;
+            
+            // If there is a floor directly above, the floor above acts as our ceiling.
+            if (drawsFloor(ly + 1, lx, lz)) return false;
+
+            // If the tile ABOVE is a shaft that punches down, hide this ceiling to create the hole
+            if (isShaft(ly + 1, lx, lz)) {
+                const pAbove = state.presets.find(pr => pr.id === state.grid[ly+1][lx][lz]);
+                if (pAbove && !pAbove.keepFloor) return false; 
+            }
+            
+            return true;
+        }
+
         // -- HISTORY LOGIC --
         function saveHistory() {
             if (state.historyIndex < state.history.length - 1) {
@@ -1069,12 +1127,15 @@
         const defaultLadderURL = createProceduralTexture('ladder', '#0a0505', '#7a6347');
         const defaultObjectURL = createProceduralTexture('plaster', '#2a1f16', '#140e0a');
 
-        function addPreset(name, color, specialType, textures, keepFloor = true, keepCeil = true, rotateFloor = false, rotateCeil = false, objectRotation = 0, rotX=0, rotY=0, rotZ=0, scale=1, autoScaleHeight=false, trimPos='none', normals=null) {
+        function addPreset(name, color, specialType, textures, keepFloor = true, keepCeil = true, rotateFloor = false, rotateCeil = false, objectRotation = 0, rotX=0, rotY=0, rotZ=0, scale=1, autoScaleHeight=false, trimPos='none', normals=null, trimScaleY=1, trimScaleZ=1) {
             const id = Date.now() + Math.floor(Math.random()*1000);
             
             // Allow ladders/stairs to punch holes by default, normal rooms shouldn't punch holes
             if (keepFloor === undefined) keepFloor = (specialType !== 'stairs' && specialType !== 'ladder');
             if (keepCeil === undefined) keepCeil = (specialType !== 'stairs' && specialType !== 'ladder');
+            
+            // Force true for normal tiles
+            if (specialType === 'none' || specialType === 'custom' || specialType === 'environment') keepFloor = true;
 
             const newPreset = {
                 id,
@@ -1089,6 +1150,8 @@
                 rotX: rotX, rotY: rotY, rotZ: rotZ, scale: scale,
                 autoScaleHeight: autoScaleHeight,
                 trimPos: trimPos,
+                trimScaleY: trimScaleY,
+                trimScaleZ: trimScaleZ,
                 models: {}, 
                 textures: textures || {
                     floor: defaultFloorURL, ceil: defaultCeilURL,
@@ -1129,7 +1192,9 @@
                 original.rotX, original.rotY, original.rotZ, original.scale,
                 original.autoScaleHeight,
                 original.trimPos,
-                original.normals ? JSON.parse(JSON.stringify(original.normals)) : null
+                original.normals ? JSON.parse(JSON.stringify(original.normals)) : null,
+                original.trimScaleY,
+                original.trimScaleZ
             );
             
             const newPreset = state.presets.find(p => p.id === newId);
@@ -1607,6 +1672,14 @@
 
         document.getElementById('btn-generate').addEventListener('click', generateRandomDungeon);
 
+        document.getElementById('btn-clean-mesh').addEventListener('click', () => {
+            build3DScene();
+            const btn = document.getElementById('btn-clean-mesh');
+            const orig = btn.innerHTML;
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#a3b899]"><polyline points="20 6 9 17 4 12"></polyline></svg> Mesh Cleaned!`;
+            setTimeout(() => btn.innerHTML = orig, 2000);
+        });
+
         function renderPresetList() {
             const container = document.getElementById('presets-list');
             container.innerHTML = '';
@@ -1668,6 +1741,10 @@
             const customOptions = document.getElementById('custom-options');
             const textureContainer = document.getElementById('texture-slots-container');
             const trimSelectorBox = document.getElementById('trim-selector-box');
+            
+            const autoScaleContainer = document.getElementById('auto-scale-container');
+            const keepFloorContainer = document.getElementById('keep-floor-container');
+            const keepCeilContainer = document.getElementById('keep-ceil-container');
 
             if (typeEl) {
                 typeEl.value = p.specialType || 'none';
@@ -1679,6 +1756,10 @@
                 customOptions.classList.add('hidden');
                 textureContainer.classList.remove('hidden');
                 trimSelectorBox.classList.remove('hidden');
+                
+                autoScaleContainer.classList.add('hidden');
+                keepFloorContainer.classList.add('hidden');
+                keepCeilContainer.classList.remove('hidden');
 
                 if (p.specialType === 'stairs' || p.specialType === 'ladder') {
                     wallSlots.classList.add('hidden');
@@ -1686,6 +1767,8 @@
                     objSlot.classList.add('grid');
                     trimSelectorBox.classList.add('hidden');
                     customOptions.classList.remove('hidden'); 
+                    autoScaleContainer.classList.remove('hidden');
+                    keepFloorContainer.classList.remove('hidden');
                 } else if (p.specialType === 'custom') {
                     customOptions.classList.remove('hidden');
                 } else if (p.specialType === 'environment') {
@@ -1737,6 +1820,12 @@
                     trimTexSlot.classList.remove('flex');
                 }
             }
+            
+            const trimScaleY = document.getElementById('edit-trim-scale-y');
+            if (trimScaleY) trimScaleY.value = p.trimScaleY || 1;
+            
+            const trimScaleZ = document.getElementById('edit-trim-scale-z');
+            if (trimScaleZ) trimScaleZ.value = p.trimScaleZ || 1;
 
             ['floor', 'ceil', 'north', 'south', 'east', 'west', 'object', 'trim'].forEach(slot => {
                 // Main Texture Setup
@@ -1791,6 +1880,9 @@
             const p = state.presets.find(p => p.id === state.activePresetId);
             if(!p) return;
             p.specialType = e.target.value;
+            if (p.specialType === 'none' || p.specialType === 'custom' || p.specialType === 'environment') {
+                p.keepFloor = true;
+            }
             renderPresetList();
             populatePresetEditor();
             if(state.view === '3d') build3DScene();
@@ -1847,15 +1939,17 @@
             if(state.view === '3d') build3DScene();
         });
 
-        const customTransformFields = ['edit-rot-x', 'edit-rot-y', 'edit-rot-z', 'edit-scale'];
+        const customTransformFields = ['edit-rot-x', 'edit-rot-y', 'edit-rot-z', 'edit-scale', 'edit-trim-scale-y', 'edit-trim-scale-z'];
         customTransformFields.forEach(id => {
-            document.getElementById(id).addEventListener('input', (e) => {
+            document.getElementById(id)?.addEventListener('input', (e) => {
                 const p = state.presets.find(p => p.id === state.activePresetId);
                 if(!p) return;
                 if(id === 'edit-rot-x') p.rotX = parseFloat(e.target.value) || 0;
                 if(id === 'edit-rot-y') p.rotY = parseFloat(e.target.value) || 0;
                 if(id === 'edit-rot-z') p.rotZ = parseFloat(e.target.value) || 0;
                 if(id === 'edit-scale') p.scale = parseFloat(e.target.value) || 1;
+                if(id === 'edit-trim-scale-y') p.trimScaleY = parseFloat(e.target.value) || 1;
+                if(id === 'edit-trim-scale-z') p.trimScaleZ = parseFloat(e.target.value) || 1;
                 if(state.view === '3d') build3DScene();
             });
         });
@@ -2297,6 +2391,10 @@
             };
         }
 
+        function createSlabMaterials(topMat, botMat, sideMat) {
+            return [sideMat, sideMat, topMat, botMat, sideMat, sideMat];
+        }
+
         function build3DScene() {
             while(dungeonGroup.children.length > 0){ 
                 dungeonGroup.remove(dungeonGroup.children[0]); 
@@ -2304,23 +2402,12 @@
 
             const t = state.thickness || 0.05;
             
-            // Generate basic primitives translated so their origin is exactly at their bottom center.
-            const floorGeo = new THREE.BoxGeometry(1, t, 1);
-            floorGeo.translate(0, t/2, 0);
-
-            const ceilGeo = new THREE.BoxGeometry(1, t, 1);
-            ceilGeo.translate(0, t/2, 0);
+            // Generate basic slab primitive translated so its origin is exactly at its bottom center.
+            const slabGeo = new THREE.BoxGeometry(1, t, 1);
+            slabGeo.translate(0, t/2, 0);
 
             const wallGeo = new THREE.PlaneGeometry(1, 1);
             wallGeo.translate(0, 0.5, 0);
-
-            // A flat plane facing -Y (downwards) with origin at bottom-center (0,0,0)
-            const flatPlaneGeo = new THREE.PlaneGeometry(1, 1);
-            flatPlaneGeo.rotateX(Math.PI / 2);
-
-            // A flat plane facing +Y (upwards) with origin at bottom-center (0,0,0)
-            const flatPlaneCeilGeo = new THREE.PlaneGeometry(1, 1);
-            flatPlaneCeilGeo.rotateX(-Math.PI / 2);
 
             let foundStart = false;
 
@@ -2341,20 +2428,10 @@
                             foundStart = true;
                         }
                         
-                        const cellBelowId = y > 0 ? state.grid[y-1][x][z] : null;
-                        const cellBelow = cellBelowId ? state.presets.find(p => p.id === cellBelowId) : null;
-                        const cellAboveId = y < 2 ? state.grid[y+1][x][z] : null;
-                        const cellAbove = cellAboveId ? state.presets.find(p => p.id === cellAboveId) : null;
+                        let drawFloor = drawsFloor(y, x, z);
+                        let drawCeil = drawsCeil(y, x, z);
 
-                        let drawFloor = true;
-                        if (!preset.keepFloor) drawFloor = false;
-                        if (cellBelow && cellBelow.keepCeil === false) drawFloor = false;
-
-                        let drawCeil = true;
-                        if (!preset.keepCeil) drawCeil = false;
-                        if (cellAbove && cellAbove.keepFloor === false) drawCeil = false;
-
-                        // Draw Floor with thickness
+                        // Draw Floor Slab
                         if (drawFloor) {
                             if (preset.models && preset.models.floor) {
                                 let floorM = preset.models.floor.clone();
@@ -2363,49 +2440,48 @@
                                 floorM.userData = { layer: y, category: 'Floor', isCustomRoot: true };
                                 dungeonGroup.add(floorM);
                             } else {
-                                let floor = new THREE.Mesh(floorGeo, mats.floor);
-                                if (preset.rotateFloor) floor.rotation.y = Math.PI / 2;
+                                let topMat = mats.floor;
+                                let botMat = mats.ceil; // default
+                                
+                                // Inherit ceiling texture of the room below for the underside of this slab
+                                if (hasTile(y - 1, x, z)) {
+                                    let pBelowId = state.grid[y-1][x][z];
+                                    if (materialCache[pBelowId]) {
+                                        botMat = materialCache[pBelowId].ceil;
+                                    }
+                                }
+                                
+                                let slabMats = [mats.floor, mats.floor, topMat, botMat, mats.floor, mats.floor];
+                                let floor = new THREE.Mesh(slabGeo, slabMats);
+                                if (preset.rotateFloor) {
+                                    floor.rotation.y = Math.PI / 2;
+                                }
                                 floor.position.set(x, getLayerBottom(y), z);
                                 floor.userData = { layer: y, category: 'Floor' };
                                 floor.name = `Floor_${y}_${x}_${z}`;
                                 dungeonGroup.add(floor);
-
-                                let bottomMat = mats.ceil;
-                                if (cellBelowId && materialCache[cellBelowId]) {
-                                    bottomMat = materialCache[cellBelowId].ceil;
-                                }
-                                let floorBot = new THREE.Mesh(flatPlaneGeo, bottomMat);
-                                if (preset.rotateFloor) floorBot.rotation.y = Math.PI / 2; 
-                                floorBot.position.set(x, getLayerBottom(y) - 0.002, z);
-                                floorBot.userData = { layer: y, category: 'Ceiling' };
-                                floorBot.name = `FloorUnderside_${y}_${x}_${z}`;
-                                dungeonGroup.add(floorBot);
                             }
                         }
 
-                        // Draw Ceiling with thickness
+                        // Draw Ceiling Slab
                         if (drawCeil) {
                             if (preset.models && preset.models.ceil) {
                                 let ceilM = preset.models.ceil.clone();
                                 if (preset.rotateCeil) ceilM.rotation.y = Math.PI / 2;
-                                ceilM.position.set(x, getLayerTop(y) - t, z);
+                                ceilM.position.set(x, getLayerTop(y), z);
                                 ceilM.userData = { layer: y, category: 'Ceiling', isCustomRoot: true };
                                 dungeonGroup.add(ceilM);
                             } else {
-                                let ceil = new THREE.Mesh(ceilGeo, mats.ceil);
+                                let topMat = mats.floor; // Default roof 
+                                let botMat = mats.ceil;
+                                
+                                let slabMats = [mats.ceil, mats.ceil, topMat, botMat, mats.ceil, mats.ceil];
+                                let ceil = new THREE.Mesh(slabGeo, slabMats);
                                 if (preset.rotateCeil) ceil.rotation.y = Math.PI / 2;
-                                ceil.position.set(x, getLayerTop(y) - t, z);
+                                ceil.position.set(x, getLayerTop(y), z); 
                                 ceil.userData = { layer: y, category: 'Ceiling' };
                                 ceil.name = `Ceiling_${y}_${x}_${z}`;
                                 dungeonGroup.add(ceil);
-
-                                let topMat = mats.floor;
-                                let ceilTop = new THREE.Mesh(flatPlaneCeilGeo, topMat);
-                                if (preset.rotateCeil) ceilTop.rotation.y = Math.PI / 2;
-                                ceilTop.position.set(x, getLayerTop(y) + 0.002, z);
-                                ceilTop.userData = { layer: y, category: 'Floor' };
-                                ceilTop.name = `CeilingTopside_${y}_${x}_${z}`;
-                                dungeonGroup.add(ceilTop);
                             }
                         }
 
@@ -2504,16 +2580,23 @@
                         const placeTrim = (wallDir) => {
                              if (!preset.trimPos || preset.trimPos === 'none') return;
                              
+                             const sy = preset.trimScaleY || 1;
+                             const sz = preset.trimScaleZ || 1;
+                             const th = 0.1 * sy;
+                             const td = 0.05 * sz;
+                             const halfD = td / 2;
+
                              const trimYBot = getLayerBottom(y) + t;
-                             const trimYTop = getLayerTop(y) - t - 0.1;
+                             const trimYTop = getLayerTop(y) - th;
                              
                              let rotY = 0; let ox = 0; let oz = 0;
-                             if (wallDir === 'north') { oz = -0.475; rotY = 0; }
-                             if (wallDir === 'south') { oz = 0.475; rotY = Math.PI; }
-                             if (wallDir === 'east') { ox = 0.475; rotY = -Math.PI/2; }
-                             if (wallDir === 'west') { ox = -0.475; rotY = Math.PI/2; }
+                             let eps = 0;
+                             if (wallDir === 'north') { oz = -0.5 + halfD; rotY = 0; eps = 0.001; }
+                             if (wallDir === 'south') { oz = 0.5 - halfD; rotY = Math.PI; eps = 0.002; }
+                             if (wallDir === 'east') { ox = 0.5 - halfD; rotY = -Math.PI/2; eps = 0.003; }
+                             if (wallDir === 'west') { ox = -0.5 + halfD; rotY = Math.PI/2; eps = 0.004; }
 
-                             const buildT = (posY) => {
+                             const buildT = (posY, isTopTrim) => {
                                  let tMesh;
                                  if (trimModelCache[preset.id]) {
                                      tMesh = trimModelCache[preset.id].clone();
@@ -2522,14 +2605,14 @@
                                              child.material = mats.trim;
                                          }
                                      });
+                                     tMesh.scale.set(1.1, sy, sz);
                                  } else if (preset.models && preset.models.trim) {
                                      tMesh = preset.models.trim.clone();
+                                     tMesh.scale.set(1.1, sy, sz);
                                  } else {
-                                     // Fix gap by extending length from 1.0 to 1.1
-                                     const tg = new THREE.BoxGeometry(1.1, 0.1, 0.05);
-                                     tg.translate(0, 0.05, 0); // Origin at bottom center
+                                     const tg = new THREE.BoxGeometry(1.1, th + eps, td + eps);
+                                     tg.translate(0, (th + eps) / 2, 0); 
                                      
-                                     // Fix stretched UV mapping by tiling horizontally
                                      const uvs = tg.attributes.uv;
                                      if (uvs) {
                                          for (let i = 0; i < uvs.count; i++) {
@@ -2545,8 +2628,8 @@
                                  dungeonGroup.add(tMesh);
                              };
 
-                             if (preset.trimPos === 'bottom' || preset.trimPos === 'both') buildT(trimYBot);
-                             if (preset.trimPos === 'top' || preset.trimPos === 'both') buildT(trimYTop);
+                             if (preset.trimPos === 'bottom' || preset.trimPos === 'both') buildT(trimYBot, false);
+                             if (preset.trimPos === 'top' || preset.trimPos === 'both') buildT(trimYTop, true);
                         };
 
                         const placeWall = (wallDir, rotY, ox, oz, isWallPresent) => {
@@ -2704,48 +2787,24 @@
             const cx = Math.round(camera.position.x);
             const cz = Math.round(camera.position.z);
             
-            let currentCellId = state.grid[gy][cx][cz];
-            let preset = currentCellId ? state.presets.find(p => p.id === currentCellId) : null;
-            
-            let isShaft = false;
-            if (preset && (preset.specialType === 'stairs' || preset.specialType === 'ladder')) {
-                isShaft = true;
-            } else if (gy > 0) {
-                let cellBelowId = state.grid[gy-1][cx][cz];
-                let cellBelowP = cellBelowId ? state.presets.find(p => p.id === cellBelowId) : null;
-                if (cellBelowP && (cellBelowP.specialType === 'stairs' || cellBelowP.specialType === 'ladder')) {
-                    isShaft = true;
-                }
-            }
-
-            function hasFloor(layer, x, z) {
-                if (layer < 0 || layer > 2) return false;
-                let cId = state.grid[layer][x][z];
-                if (!cId) return false;
-                let p = state.presets.find(pr => pr.id === cId);
-                if (!p) return false;
-                
-                let floorExists = true;
-                if (!p.keepFloor) floorExists = false; 
-                
-                let belowId = layer > 0 ? state.grid[layer-1][x][z] : null;
-                let belowP = belowId ? state.presets.find(pr => pr.id === belowId) : null;
-                if (belowP && belowP.keepCeil === false) floorExists = false; 
-                
-                return floorExists;
-            }
+            let isPlayerInShaft = isShaft(gy, cx, cz) || (gy > 0 && isShaft(gy - 1, cx, cz));
 
             let groundY = 0.475; // absolute minimum
             let foundGround = false;
             for (let y = gy; y >= 0; y--) {
-                if (hasFloor(y, cx, cz)) {
+                if (drawsFloor(y, cx, cz)) {
                     groundY = getLayerBottom(y) + state.thickness + 0.475;
+                    foundGround = true;
+                    break;
+                }
+                if (y > 0 && drawsCeil(y - 1, cx, cz)) {
+                    groundY = getLayerTop(y - 1) + state.thickness + 0.475;
                     foundGround = true;
                     break;
                 }
             }
 
-            if (isShaft) {
+            if (isPlayerInShaft) {
                 velocityY = 0; 
                 if (keys[' ']) camera.position.y += speed;
                 if (keys['shift']) camera.position.y -= speed;
